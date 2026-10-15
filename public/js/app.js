@@ -90,6 +90,8 @@
 
   // ==================== INITIALIZATION ====================
   async function init() {
+    initTheme();
+    initShowroom();
     setupEventListeners();
     updateCartUI();
     updateWishlistUI();
@@ -101,6 +103,70 @@
     const trackId = urlParams.get('track');
     if (trackId) {
       openTrackModal(trackId);
+    }
+  }
+
+  // ==================== THEME MANAGEMENT ====================
+  function initTheme() {
+    const saved = localStorage.getItem('og_theme') || 'light';
+    applyTheme(saved);
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        playSound('click');
+        showToast(next === 'dark' ? 'Switched to Obsidian Dark mode' : 'Switched to Editorial Paper mode');
+      });
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('og_theme', theme);
+    if (window.update3DTheme) {
+      window.update3DTheme(theme);
+    }
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      themeBtn.innerHTML = theme === 'dark'
+        ? `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
+        : `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+    }
+  }
+
+  // ==================== 3D SHOWROOM STUDIO ====================
+  let activeShowroomProductId = 'Shirts-0';
+  function initShowroom() {
+    const pieceBtns = document.querySelectorAll('.showroom-piece-btn');
+    pieceBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        pieceBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const piece = btn.dataset.piece;
+        activeShowroomProductId = btn.dataset.productId || 'Shirts-0';
+        if (window.setShowroomPiece) window.setShowroomPiece(piece);
+        playSound('click');
+      });
+    });
+
+    const lightBtns = document.querySelectorAll('.lighting-btn');
+    lightBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        lightBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const light = btn.dataset.light;
+        if (window.setShowroomLighting) window.setShowroomLighting(light);
+        playSound('click');
+      });
+    });
+
+    const inspectBtn = document.getElementById('inspectShowroomPieceBtn');
+    if (inspectBtn) {
+      inspectBtn.addEventListener('click', () => {
+        openQuickView(activeShowroomProductId);
+      });
     }
   }
 
@@ -362,6 +428,10 @@
   function updateCartUI() {
     const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
     if (DOM.cartCount) DOM.cartCount.textContent = totalItems;
+    const mobileCount = document.getElementById('mobileCartCount');
+    if (mobileCount) mobileCount.textContent = totalItems;
+    const drawerCount = document.getElementById('cartCountDrawer');
+    if (drawerCount) drawerCount.textContent = totalItems;
 
     const { subtotal, discount, shipping, total, qualifyFreeShipping } = calculateCartTotals();
 
@@ -1359,6 +1429,41 @@
       });
       heroStage.addEventListener('pointerleave', () => {
         heroStage.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+      });
+    }
+
+    // Payment Method Selection (Toggle UPI QR Card)
+    const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const qrCard = document.getElementById('upiQrCard');
+        if (qrCard) {
+          qrCard.classList.toggle('show', radio.value === 'UPI / QR Code');
+        }
+        playSound('click');
+      });
+    });
+
+    // Print Receipt button in Order Confirmation
+    const printBtn = document.getElementById('printInvoiceBtn');
+    if (printBtn) {
+      printBtn.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    // Mobile Bottom Navigation Bar buttons
+    const mobileCartBtn = document.getElementById('mobileCartBtn');
+    if (mobileCartBtn) {
+      mobileCartBtn.addEventListener('click', () => {
+        openCartDrawer();
+      });
+    }
+
+    const mobileWishBtn = document.getElementById('mobileWishlistBtn');
+    if (mobileWishBtn) {
+      mobileWishBtn.addEventListener('click', () => {
+        openWishlistDrawer();
       });
     }
   }

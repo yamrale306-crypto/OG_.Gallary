@@ -26,6 +26,20 @@
   --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+[data-theme="dark"] {
+  --paper: #121411;
+  --paper-light: #181b17;
+  --paper-dark: #222620;
+  --ink: #f5f2eb;
+  --ink-soft: #dcd8ce;
+  --muted: #95988e;
+  --line: rgba(245, 242, 235, 0.12);
+  --line-strong: rgba(245, 242, 235, 0.24);
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 14px 34px rgba(0, 0, 0, 0.6);
+  --shadow-3d: 0 35px 80px rgba(0, 0, 0, 0.8);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -2125,6 +2139,235 @@ img {
     transform: none;
     font-size: 9px;
     padding: 8px;
+  }
+}
+
+/* ==================== 3D INTERACTIVE SHOWROOM SECTION ==================== */
+.showroom-3d-section {
+  padding: 100px 4.5% 90px;
+  background: var(--paper-dark);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+.showroom-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 36px;
+}
+.showroom-header h2 {
+  font-size: clamp(38px, 5.2vw, 64px);
+  margin-top: 6px;
+}
+.showroom-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.showroom-container {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  align-items: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.showroom-panel {
+  background: var(--paper-light);
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.showroom-panel h4 {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  color: var(--ink-soft);
+}
+.showroom-piece-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  border: 1px solid transparent;
+  color: var(--ink);
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+.showroom-piece-btn:hover {
+  background: var(--paper-dark);
+}
+.showroom-piece-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+.showroom-stage {
+  height: 420px;
+  position: relative;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+.showroom-stage.grabbing {
+  cursor: grabbing;
+}
+.showroom-badge-rotate {
+  position: absolute;
+  bottom: 20px;
+  background: rgba(27, 30, 25, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 99px;
+  pointer-events: none;
+}
+.lighting-swatches {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.lighting-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+.lighting-btn.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ==================== UPI QR CODE STYLING ==================== */
+.upi-qr-card {
+  display: none;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 14px;
+}
+.upi-qr-card.show {
+  display: block;
+}
+.qr-code-box {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 12px;
+  background: #f7f7f7;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+}
+.qr-code-box svg {
+  width: 100%;
+  height: 100%;
+}
+.upi-id-badge {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #333;
+}
+.upi-timer {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* ==================== MOBILE BOTTOM NAVIGATION BAR ==================== */
+.mobile-bottom-bar {
+  display: none;
+}
+@media (max-width: 640px) {
+  .mobile-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--paper-light);
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 85;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  }
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--muted);
+    flex: 1;
+    height: 100%;
+  }
+  .mobile-nav-item.active,
+  .mobile-nav-item:active {
+    color: var(--ink);
+  }
+  .showroom-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== PRINT INVOICE STYLES ==================== */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  #webgl-canvas,
+  .site-header,
+  .announcement,
+  .site-footer,
+  .depth-indicator,
+  .sound-toggle-fixed,
+  .mobile-bottom-bar,
+  .modal-close-btn,
+  #closeConfirmBtn,
+  #trackNewOrderBtn,
+  #printInvoiceBtn {
+    display: none !important;
+  }
+  .modal-overlay {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+  .confirm-card {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    margin: 0 auto;
+    width: 100% !important;
   }
 }
 
