@@ -1,6 +1,11 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+// ESM has no __dirname; Vercel only skips its ESM->CJS rewrite when package.json
+// is "type": "module", and that rewrite breaks the browser's three.js modules.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +17,17 @@ app.use(express.urlencoded({ extended: true }));
 
 // Helper to safely read and write JSON files
 const DATA_DIR = path.join(__dirname, 'data');
+// Vercel's bundler ships only statically traceable files; readJson's dynamic
+// filenames are invisible to it, so touch each data file by literal URL.
+for (const url of [
+  new URL('./data/products.json', import.meta.url),
+  new URL('./data/orders.json', import.meta.url),
+  new URL('./data/reviews.json', import.meta.url),
+  new URL('./data/subscribers.json', import.meta.url),
+  new URL('./data/promos.json', import.meta.url),
+]) {
+  try { fs.readFileSync(url); } catch { /* created on first write */ }
+}
 function readJson(filename, defaultValue = []) {
   const filePath = path.join(DATA_DIR, filename);
   try {
@@ -476,8 +492,8 @@ app.use((req, res) => {
 });
 
 // Vercel requires the app via api/index.js; only listen when run directly.
-module.exports = app;
-if (require.main === module) {
+export default app;
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   app.listen(PORT, () => {
     console.log(`[OG Gallery Server] Running smoothly on http://localhost:${PORT}`);
     console.log(`[API Endpoints] /api/products, /api/orders, /api/reviews, /api/newsletter`);
