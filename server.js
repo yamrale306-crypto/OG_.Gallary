@@ -44,9 +44,10 @@ app.use('/vendor/three', express.static(path.join(__dirname, 'public', 'vendor',
 // Serve static assets. Only public/ is exposed plus an explicit allow-list of
 // root files — data/, node_modules/ and server.js are never web-reachable.
 app.use('/public', express.static(path.join(__dirname, 'public')));
-for (const file of ['styles.css', 'favicon.svg', 'robots.txt']) {
-  app.get('/' + file, (req, res) => res.sendFile(path.join(__dirname, file)));
-}
+// Literal paths so @vercel/nft can statically trace these into the bundle.
+app.get('/styles.css', (req, res) => res.sendFile(path.join(__dirname, 'styles.css')));
+app.get('/favicon.svg', (req, res) => res.sendFile(path.join(__dirname, 'favicon.svg')));
+app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
 
 // ---------------- API ROUTES ----------------
 
