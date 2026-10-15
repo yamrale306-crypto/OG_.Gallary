@@ -7,7 +7,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "data/**"
+      "includeFiles": "data/**,styles.css,favicon.svg,robots.txt"
     }
   }
 }
