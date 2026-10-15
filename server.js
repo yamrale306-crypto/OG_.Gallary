@@ -38,8 +38,8 @@ function writeJson(filename, data) {
   }
 }
 
-// Serve node_modules/three/build for local offline Three.js access
-app.use('/vendor/three', express.static(path.join(__dirname, 'node_modules', 'three', 'build')));
+// Serve Three.js build files (copied into public/vendor so Vercel serves them too)
+app.use('/vendor/three', express.static(path.join(__dirname, 'public', 'vendor', 'three')));
 
 // Serve static assets. Only public/ is exposed plus an explicit allow-list of
 // root files — data/, node_modules/ and server.js are never web-reachable.
@@ -474,8 +474,11 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`[OG Gallery Server] Running smoothly on http://localhost:${PORT}`);
-  console.log(`[API Endpoints] /api/products, /api/orders, /api/reviews, /api/newsletter`);
-});
+// Vercel requires the app via api/index.js; only listen when run directly.
+module.exports = app;
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`[OG Gallery Server] Running smoothly on http://localhost:${PORT}`);
+    console.log(`[API Endpoints] /api/products, /api/orders, /api/reviews, /api/newsletter`);
+  });
+}

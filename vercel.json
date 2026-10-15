@@ -1,12 +1,13 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/server.js"
-    },
-    {
-      "source": "/((?!api).*)",
-      "destination": "/server.js"
+      "source": "/(.*)",
+      "destination": "/api/index"
     }
-  ]
+  ],
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "data/**"
+    }
+  }
 }
