@@ -13,15 +13,27 @@
     },
     {
       "src": "/public/(.*)",
-      "dest": "/public/$1"
+      "dest": "/server.js"
     },
     {
-      "src": "/(styles\\.css|favicon\\.svg|robots\\.txt)",
-      "dest": "/$1"
+      "src": "/styles\\.css",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/favicon\\.svg",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/robots\\.txt",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/vendor/(.*)",
+      "dest": "/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/server.js"
     }
   ]
 }
