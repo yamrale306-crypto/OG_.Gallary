@@ -1,435 +1,320 @@
-// 3D Scroll & Interactive WebGL Experience with Three.js
-(function () {
-  'use strict';
+/* ============================================================
+   OG Gallery — the rail.
+   A scroll-driven 3D showcase of the real product photos.
+   Each piece is a textured plane; scrolling dollies the camera
+   down the rail, dragging turns the focused piece.
 
-  let scene, camera, renderer;
-  let objectsGroup, particleSystem;
-  let heroTorus, ringMesh1, ringMesh2, floatingPoly, pedestalGroup;
-  let ambientLight, dirLight1, dirLight2, pointLight;
-  let scrollProgress = 0;
-  let targetScrollProgress = 0;
-  let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-  let isMobile = false;
+   Exposes window.OG3D. Degrades to nothing if WebGL is missing
+   (app.js draws an HTML rail instead).
+   ============================================================ */
+import * as THREE from 'three';
 
-  // Showroom 3D Interactive Turntable
-  let showroomTurntableGroup, showroomMesh;
-  let showroomRotation = 0;
-  let showroomDrag = { isDragging: false, startX: 0, currentRotation: 0 };
+const FOV = 38;
+const CARD_ASPECT = 3 / 4;
 
-  function initThree() {
-    const canvas = document.getElementById('webgl-canvas');
-    if (!canvas) return;
+const state = {
+  ready: false,
+  mount: null,
+  cards: [],
+  group: null,
+  shadow: null,
+  renderer: null,
+  scene: null,
+  camera: null,
+  target: 0,      // target focus index (fractional)
+  current: 0,     // eased focus index
+  drag: 0,        // drag rotation on the focused card, radians
+  dragTarget: 0,
+  lastFocus: -1,
+  layout: null,
+  running: false,
+  visible: true,
+  raf: null
+};
 
-    if (typeof THREE === 'undefined') {
-      console.warn('Three.js not yet loaded, retrying...');
-      setTimeout(initThree, 100);
-      return;
-    }
-
-    isMobile = window.innerWidth < 768;
-
-    // Scene
-    scene = new THREE.Scene();
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    scene.fog = new THREE.FogExp2(isDark ? 0x121411 : 0xf5f2eb, 0.035);
-
-    // Camera
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 8);
-
-    // Renderer
-    renderer = new THREE.WebGLRenderer({
-      canvas: canvas,
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance'
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = isDark ? 1.25 : 1.05;
-
-    // Lights
-    ambientLight = new THREE.AmbientLight(isDark ? 0x2e352d : 0xfff8ee, isDark ? 1.8 : 1.4);
-    scene.add(ambientLight);
-
-    dirLight1 = new THREE.DirectionalLight(0xffecd2, 2.2);
-    dirLight1.position.set(5, 10, 7);
-    scene.add(dirLight1);
-
-    dirLight2 = new THREE.DirectionalLight(0xc8b082, 1.2);
-    dirLight2.position.set(-6, -5, -4);
-    scene.add(dirLight2);
-
-    pointLight = new THREE.PointLight(0xd46a43, 2, 20);
-    pointLight.position.set(0, 0, 4);
-    scene.add(pointLight);
-
-    // Groups
-    objectsGroup = new THREE.Group();
-    scene.add(objectsGroup);
-
-    // 1. Hero Torus Sculpture (Refined contemporary fashion emblem)
-    const torusGeo = new THREE.TorusKnotGeometry(1.35, 0.32, 128, 32, 2, 3);
-    const torusMat = new THREE.MeshStandardMaterial({
-      color: 0xc49b56,
-      metalness: 0.85,
-      roughness: 0.25,
-      wireframe: false
-    });
-    heroTorus = new THREE.Mesh(torusGeo, torusMat);
-    heroTorus.position.set(2.4, 0.2, 0);
-    heroTorus.scale.set(1, 1, 1);
-    objectsGroup.add(heroTorus);
-
-    // 2. Luxury Architectural Ring 1
-    const ringGeo1 = new THREE.TorusGeometry(2.4, 0.04, 16, 100);
-    const ringMat1 = new THREE.MeshStandardMaterial({
-      color: 0x1d211b,
-      metalness: 0.9,
-      roughness: 0.2
-    });
-    ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
-    ringMesh1.position.set(2.4, 0.2, -0.5);
-    ringMesh1.rotation.x = Math.PI / 3;
-    objectsGroup.add(ringMesh1);
-
-    // 3. Floating Dotted Outer Ring
-    const ringGeo2 = new THREE.TorusGeometry(3.1, 0.02, 16, 100);
-    const ringMat2 = new THREE.MeshStandardMaterial({
-      color: 0xd46a43,
-      metalness: 0.5,
-      roughness: 0.4
-    });
-    ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
-    ringMesh2.position.set(2.4, 0.2, -1.2);
-    ringMesh2.rotation.y = Math.PI / 4;
-    objectsGroup.add(ringMesh2);
-
-    // 4. Floating Sculptural Icosahedron (Showroom gem)
-    const polyGeo = new THREE.IcosahedronGeometry(0.85, 0);
-    const polyMat = new THREE.MeshStandardMaterial({
-      color: 0x8a7a58,
-      metalness: 0.9,
-      roughness: 0.15,
-      flatShading: true
-    });
-    floatingPoly = new THREE.Mesh(polyGeo, polyMat);
-    floatingPoly.position.set(-2.8, -3.5, 0);
-    objectsGroup.add(floatingPoly);
-
-    // 5. Floating Showcase Pedestal Rings (Shop Section Accent)
-    pedestalGroup = new THREE.Group();
-    for (let i = 0; i < 3; i++) {
-      const pGeo = new THREE.CylinderGeometry(1.6 + i * 0.4, 1.6 + i * 0.4, 0.06, 64);
-      const pMat = new THREE.MeshStandardMaterial({
-        color: i % 2 === 0 ? 0x22241e : 0xc49b56,
-        metalness: 0.7,
-        roughness: 0.3
-      });
-      const pMesh = new THREE.Mesh(pGeo, pMat);
-      pMesh.position.y = -i * 0.18;
-      pedestalGroup.add(pMesh);
-    }
-    pedestalGroup.position.set(3.2, -7.5, -2);
-    pedestalGroup.rotation.x = 0.35;
-    objectsGroup.add(pedestalGroup);
-
-    // 6. Interactive 3D Showroom Turntable Section Mesh
-    showroomTurntableGroup = new THREE.Group();
-    showroomTurntableGroup.position.set(0, -11.2, 0);
-
-    // Showroom Cylindrical Pedestal
-    const baseGeo = new THREE.CylinderGeometry(1.8, 2.0, 0.25, 48);
-    const baseMat = new THREE.MeshStandardMaterial({
-      color: 0x262923,
-      metalness: 0.8,
-      roughness: 0.2
-    });
-    const baseMesh = new THREE.Mesh(baseGeo, baseMat);
-    baseMesh.position.y = -1.2;
-    showroomTurntableGroup.add(baseMesh);
-
-    // Showroom 3D Centerpiece
-    const centerpieceGeo = new THREE.DodecahedronGeometry(1.1, 1);
-    const centerpieceMat = new THREE.MeshStandardMaterial({
-      color: 0xd0b36c,
-      metalness: 0.85,
-      roughness: 0.25,
-      wireframe: false
-    });
-    showroomMesh = new THREE.Mesh(centerpieceGeo, centerpieceMat);
-    showroomTurntableGroup.add(showroomMesh);
-
-    // Showroom Orbit Rings
-    const orbitGeo = new THREE.TorusGeometry(1.6, 0.02, 16, 64);
-    const orbitMat = new THREE.MeshStandardMaterial({ color: 0xef6b45, metalness: 0.5 });
-    const orbitMesh = new THREE.Mesh(orbitGeo, orbitMat);
-    orbitMesh.rotation.x = Math.PI / 2.2;
-    showroomTurntableGroup.add(orbitMesh);
-
-    objectsGroup.add(showroomTurntableGroup);
-
-    // 7. Champagne & Gold Ambient Particles System
-    const particleCount = isMobile ? 90 : 240;
-    const particleGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const scales = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 18;
-      positions[i + 1] = (Math.random() - 0.5) * 32;
-      positions[i + 2] = (Math.random() - 0.5) * 14;
-      scales[i / 3] = Math.random() * 0.8 + 0.2;
-    }
-
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particleGeo.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
-
-    // Particle texture generator (soft round particle)
-    const pCanvas = document.createElement('canvas');
-    pCanvas.width = 32;
-    pCanvas.height = 32;
-    const pCtx = pCanvas.getContext('2d');
-    const pGrad = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-    pGrad.addColorStop(0, 'rgba(212, 168, 90, 1)');
-    pGrad.addColorStop(0.4, 'rgba(239, 107, 69, 0.6)');
-    pGrad.addColorStop(1, 'rgba(245, 242, 235, 0)');
-    pCtx.fillStyle = pGrad;
-    pCtx.fillRect(0, 0, 32, 32);
-
-    const pTexture = new THREE.CanvasTexture(pCanvas);
-
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.28,
-      map: pTexture,
-      transparent: true,
-      opacity: 0.78,
-      blending: THREE.NormalBlending,
-      depthWrite: false
-    });
-
-    particleSystem = new THREE.Points(particleGeo, particleMat);
-    scene.add(particleSystem);
-
-    // Event listeners
-    window.addEventListener('resize', onResize);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-
-    // Showroom 3D Interactive Turntable mouse/touch drag
-    setupShowroomInteraction();
-
-    onResize();
-    onScroll();
-    animate();
+/* ---------- helpers ---------- */
+function layoutFor(w, h) {
+  const wide = w / h >= 1.25;
+  if (wide) {
+    return { cardH: 4.4, cardW: 4.4 * CARD_ASPECT, pitch: 3.95, camZ: 8.4, groupX: 1.25, groupY: 0.2 };
   }
+  return { cardH: 3.7, cardW: 3.7 * CARD_ASPECT, pitch: 3.1, camZ: 7.7, groupX: 0, groupY: 0.62 };
+}
 
-  function setupShowroomInteraction() {
-    const stage = document.getElementById('showroomStage');
-    if (!stage) return;
-
-    stage.addEventListener('pointerdown', e => {
-      showroomDrag.isDragging = true;
-      showroomDrag.startX = e.clientX;
-      stage.classList.add('grabbing');
-    });
-
-    window.addEventListener('pointermove', e => {
-      if (!showroomDrag.isDragging) return;
-      const deltaX = e.clientX - showroomDrag.startX;
-      showroomRotation += deltaX * 0.008;
-      showroomDrag.startX = e.clientX;
-    });
-
-    window.addEventListener('pointerup', () => {
-      if (showroomDrag.isDragging) {
-        showroomDrag.isDragging = false;
-        stage.classList.remove('grabbing');
-      }
-    });
-  }
-
-  // Exposed API to switch showroom piece
-  window.setShowroomPiece = function (pieceType) {
-    if (!showroomMesh) return;
-    if (pieceType === 'shirt') {
-      showroomMesh.geometry.dispose();
-      showroomMesh.geometry = new THREE.TorusKnotGeometry(1.0, 0.28, 96, 24, 2, 3);
-      showroomMesh.material.color.setHex(0xc49b56);
-    } else if (pieceType === 'denim') {
-      showroomMesh.geometry.dispose();
-      showroomMesh.geometry = new THREE.CylinderGeometry(0.8, 0.9, 1.8, 32);
-      showroomMesh.material.color.setHex(0x3a5a78); // indigo
-    } else if (pieceType === 'slide') {
-      showroomMesh.geometry.dispose();
-      showroomMesh.geometry = new THREE.BoxGeometry(1.8, 0.5, 1.1);
-      showroomMesh.material.color.setHex(0xef6b45); // terracotta
-    }
-  };
-
-  // Exposed API to change showroom lighting
-  window.setShowroomLighting = function (mode) {
-    if (!dirLight1 || !ambientLight) return;
-    if (mode === 'studio') {
-      dirLight1.color.setHex(0xffffff);
-      ambientLight.color.setHex(0xfff8ee);
-      pointLight.color.setHex(0xd46a43);
-    } else if (mode === 'sunset') {
-      dirLight1.color.setHex(0xff9944);
-      ambientLight.color.setHex(0xaa5533);
-      pointLight.color.setHex(0xff5522);
-    } else if (mode === 'midnight') {
-      dirLight1.color.setHex(0x88bbff);
-      ambientLight.color.setHex(0x112233);
-      pointLight.color.setHex(0x4466aa);
-    }
-  };
-
-  // Exposed API to adapt 3D scene to Dark/Light theme
-  window.update3DTheme = function (theme) {
-    if (!scene || !renderer) return;
-    const isDark = theme === 'dark';
-    scene.fog.color.setHex(isDark ? 0x121411 : 0xf5f2eb);
-    if (ambientLight) ambientLight.color.setHex(isDark ? 0x30352b : 0xfff8ee);
-    if (dirLight2) dirLight2.color.setHex(isDark ? 0xb59e6c : 0xc8b082);
-    renderer.toneMappingExposure = isDark ? 1.25 : 1.05;
-  };
-
-  function onResize() {
-    if (!renderer || !camera) return;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    isMobile = width < 768;
-
-    camera.aspect = width / height;
-    if (isMobile) {
-      camera.fov = 62;
-      if (heroTorus) heroTorus.position.set(0, 1.8, -1.5);
-      if (ringMesh1) ringMesh1.position.set(0, 1.8, -2.0);
-      if (ringMesh2) ringMesh2.position.set(0, 1.8, -2.4);
-    } else {
-      camera.fov = 50;
-      if (heroTorus) heroTorus.position.set(2.4, 0.2, 0);
-      if (ringMesh1) ringMesh1.position.set(2.4, 0.2, -0.5);
-      if (ringMesh2) ringMesh2.position.set(2.4, 0.2, -1.2);
-    }
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
-  }
-
-  function onScroll() {
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (docHeight > 0) {
-      targetScrollProgress = Math.max(0, Math.min(1, window.scrollY / docHeight));
-    }
-    // Update scroll depth indicator in DOM
-    const depthEl = document.getElementById('scrollDepthIndicator');
-    if (depthEl) {
-      const pct = Math.round(targetScrollProgress * 100);
-      depthEl.textContent = `${pct.toString().padStart(2, '0')}%`;
-    }
-    const progressBar = document.getElementById('scrollProgressBar');
-    if (progressBar) {
-      progressBar.style.width = `${targetScrollProgress * 100}%`;
-    }
-  }
-
-  function onMouseMove(e) {
-    mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
-  }
-
-  let clock = {
-    start: Date.now(),
-    getElapsedTime: function () {
-      return (Date.now() - this.start) / 1000;
-    }
-  };
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    const elapsed = clock.getElapsedTime();
-
-    // Smooth lerp for scroll & mouse
-    scrollProgress += (targetScrollProgress - scrollProgress) * 0.07;
-    mouse.x += (mouse.targetX - mouse.x) * 0.05;
-    mouse.y += (mouse.targetY - mouse.y) * 0.05;
-
-    // 3D Camera Trajectory along scroll depth
-    const camY = -scrollProgress * 16;
-    const camZ = 8 - Math.sin(scrollProgress * Math.PI) * 2.2;
-    const camX = Math.sin(scrollProgress * Math.PI * 2) * 1.8 + mouse.x * 0.6;
-
-    camera.position.x = camX;
-    camera.position.y = camY - mouse.y * 0.4;
-    camera.position.z = camZ;
-
-    camera.lookAt(
-      Math.sin(scrollProgress * 3) * 0.8,
-      camY - 0.4,
-      0
-    );
-
-    // Rotate Sculptures
-    if (heroTorus) {
-      heroTorus.rotation.x = elapsed * 0.35 + scrollProgress * 5;
-      heroTorus.rotation.y = elapsed * 0.45 + mouse.x * 0.5;
-      heroTorus.rotation.z = scrollProgress * 3;
-    }
-
-    if (ringMesh1) {
-      ringMesh1.rotation.x = Math.PI / 3 + elapsed * 0.15;
-      ringMesh1.rotation.y = elapsed * 0.25 - scrollProgress * 3;
-    }
-
-    if (ringMesh2) {
-      ringMesh2.rotation.z = elapsed * 0.18 + scrollProgress * 4;
-      ringMesh2.rotation.x = Math.PI / 4 + elapsed * 0.1;
-    }
-
-    if (floatingPoly) {
-      floatingPoly.rotation.x = elapsed * 0.5;
-      floatingPoly.rotation.y = elapsed * 0.6;
-      floatingPoly.position.y = -3.5 - scrollProgress * 6 + Math.sin(elapsed * 1.5) * 0.25;
-    }
-
-    if (pedestalGroup) {
-      pedestalGroup.rotation.y = elapsed * 0.2;
-      pedestalGroup.position.y = -7.5 - scrollProgress * 4;
-    }
-
-    // Showroom 3D Interactive Turntable rotation
-    if (showroomTurntableGroup) {
-      if (!showroomDrag.isDragging) {
-        showroomRotation += 0.005;
-      }
-      showroomTurntableGroup.rotation.y = showroomRotation;
-      if (showroomMesh) {
-        showroomMesh.rotation.x = Math.sin(elapsed * 1.2) * 0.1;
-      }
-    }
-
-    // Particle subtle floating drift
-    if (particleSystem) {
-      particleSystem.rotation.y = elapsed * 0.04;
-      particleSystem.rotation.x = Math.sin(elapsed * 0.03) * 0.1;
-      const positions = particleSystem.geometry.attributes.position.array;
-      for (let i = 1; i < positions.length; i += 3) {
-        positions[i] -= 0.004;
-        if (positions[i] < -16) positions[i] = 16;
-      }
-      particleSystem.geometry.attributes.position.needsUpdate = true;
-    }
-
-    renderer.render(scene, camera);
-  }
-
-  // Initialize once DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initThree);
+/** Crop the texture so it covers the card without stretching. */
+function coverUV(texture, cardAspect) {
+  const img = texture.image;
+  if (!img || !img.width || !img.height) return;
+  const imgAspect = img.width / img.height;
+  texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+  if (imgAspect > cardAspect) {
+    const sx = cardAspect / imgAspect;
+    texture.repeat.set(sx, 1);
+    texture.offset.set((1 - sx) / 2, 0);
   } else {
-    initThree();
+    const sy = imgAspect / cardAspect;
+    texture.repeat.set(1, sy);
+    texture.offset.set(0, (1 - sy) / 2);
   }
-})();
+}
+
+function shadowTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, 'rgba(0,0,0,.42)');
+  g.addColorStop(.55, 'rgba(0,0,0,.16)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 256, 256);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+/* ---------- mount ---------- */
+function mount(canvas, products, opts = {}) {
+  const onFocus = opts.onFocus || (() => {});
+  const reduced = !!opts.reduced;
+
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+  } catch (err) {
+    return null;
+  }
+  if (!renderer || !renderer.getContext()) return null;
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const loader = new THREE.TextureLoader();
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  const cards = products.map((product, i) => {
+    const mat = new THREE.MeshBasicMaterial({ color: 0xd8d2c6, transparent: true, opacity: 1 });
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+    mesh.userData = { product, index: i };
+    group.add(mesh);
+
+    loader.load(
+      product.image,
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = Math.min(8, maxAniso || 1);
+        coverUV(tex, CARD_ASPECT);
+        mat.map = tex;
+        mat.color.set(0xffffff);
+        mat.needsUpdate = true;
+        // give the cover-crop a moment to apply before showing
+        mesh.userData.tex = tex;
+      },
+      undefined,
+      () => { /* keep the placeholder tint if a photo will not load */ }
+    );
+    return mesh;
+  });
+
+  const shadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({ map: shadowTexture(), transparent: true, opacity: .85, depthWrite: false })
+  );
+  shadow.rotation.x = -Math.PI / 2;
+  group.add(shadow);
+
+  state.renderer = renderer;
+  state.scene = scene;
+  state.camera = camera;
+  state.group = group;
+  state.cards = cards;
+  state.shadow = shadow;
+  state.onFocus = onFocus;
+  state.reduced = reduced;
+  state.current = state.target = 0;
+  state.lastFocus = -1;
+  state.ready = true;
+  state.mount = { canvas, products };
+
+  applyLayout();
+  window.addEventListener('resize', applyLayout);
+  canvas.addEventListener('pointerdown', onPointerDown);
+  canvas.addEventListener('pointermove', onPointerMove);
+  canvas.addEventListener('pointerup', onPointerUp);
+  canvas.addEventListener('pointercancel', onPointerUp);
+  canvas.addEventListener('pointerleave', onPointerUp);
+
+  state.visible = true;
+  startLoop();
+
+  state.fitTheme = fitTheme;
+  fitTheme();
+  return state;
+}
+
+function applyLayout() {
+  const canvas = state.mount && state.mount.canvas;
+  if (!canvas) return;
+  const rect = canvas.getBoundingClientRect();
+  const w = Math.max(1, rect.width);
+  const h = Math.max(1, rect.height);
+  const l = layoutFor(w, h);
+  state.layout = l;
+
+  state.renderer.setSize(w, h, false);
+  state.camera.aspect = w / h;
+  state.camera.position.set(0, 0, l.camZ);
+  state.camera.lookAt(0, 0, 0);
+  state.camera.updateProjectionMatrix();
+
+  state.group.position.set(l.groupX, l.groupY, 0);
+
+  state.cards.forEach((mesh) => mesh.geometry.dispose());
+  state.cards.forEach((mesh) => mesh.geometry = new THREE.PlaneGeometry(l.cardW, l.cardH));
+  state.shadow.geometry.dispose();
+  state.shadow.geometry = new THREE.PlaneGeometry(l.cardW * 1.25, l.cardW * .62);
+
+  layoutCards();
+  renderOnce();
+}
+
+function fitTheme() {
+  if (!state.shadow || !state.shadow.material) return;
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  state.shadow.material.opacity = dark ? .95 : .8;
+}
+
+/* ---------- per-frame layout ---------- */
+function layoutCards() {
+  const l = state.layout;
+  if (!l) return;
+  const n = state.cards.length;
+  const f = state.current;
+
+  state.cards.forEach((mesh, i) => {
+    const d = i - f;                     // distance from the focused piece, in pieces
+    const abs = Math.abs(d);
+    const isFocus = Math.round(f) === i;
+    const scale = isFocus ? 1 : Math.max(.84, 1 - abs * .07);
+    const rot = THREE.MathUtils.clamp(-d * .34, -0.62, 0.62) + (isFocus ? state.drag : 0);
+
+    mesh.position.set(d * l.pitch, -abs * .16, -abs * .5);
+    mesh.rotation.set(0, rot, 0);
+    mesh.scale.set(scale, scale, 1);
+    mesh.material.opacity = abs > 3.7 ? 0 : Math.max(.25, 1 - abs * .17);
+    mesh.visible = abs < 4.2;
+    mesh.renderOrder = 10 - abs;
+    mesh.material.depthWrite = abs < .5;
+  });
+
+  const active = state.cards[Math.round(f)];
+  if (active) {
+    state.shadow.position.set(active.position.x, active.position.y - l.cardH / 2 - .14, active.position.z);
+    state.shadow.scale.setScalar(THREE.MathUtils.clamp(1 - Math.abs(f - Math.round(f)), .55, 1));
+  }
+}
+
+function renderOnce() {
+  if (!state.ready || !state.visible) return;
+  layoutCards();
+  state.renderer.render(state.scene, state.camera);
+}
+
+/* ---------- loop ---------- */
+function startLoop() {
+  if (state.running) return;
+  state.running = true;
+  const tick = () => {
+    if (!state.ready) return;
+    const ease = state.reduced ? 1 : 0.14;
+    state.current += (state.target - state.current) * ease;
+    if (Math.abs(state.target - state.current) < 0.0004) state.current = state.target;
+    state.drag += (state.dragTarget - state.drag) * (state.reduced ? 1 : 0.12);
+
+    if (state.visible) {
+      layoutCards();
+      state.renderer.render(state.scene, state.camera);
+    }
+
+    const focus = Math.round(state.current);
+    if (focus !== state.lastFocus) {
+      state.lastFocus = focus;
+      if (state.onFocus) state.onFocus(focus, state.cards[focus] && state.cards[focus].userData.product);
+    }
+    state.raf = requestAnimationFrame(tick);
+  };
+  state.raf = requestAnimationFrame(tick);
+}
+
+function stopLoop() {
+  state.running = false;
+  if (state.raf) cancelAnimationFrame(state.raf);
+  state.raf = null;
+}
+
+/* ---------- input ---------- */
+function onPointerDown(e) {
+  if (!state.ready) return;
+  state.dragging = true;
+  state.dragStartX = e.clientX;
+  state.dragBase = state.dragTarget;
+  state.mount.canvas.classList.add('is-dragging');
+  state.mount.canvas.setPointerCapture && state.mount.canvas.setPointerCapture(e.pointerId);
+}
+
+function onPointerMove(e) {
+  if (!state.dragging) return;
+  const dx = e.clientX - state.dragStartX;
+  state.dragTarget = THREE.MathUtils.clamp(state.dragBase + dx * 0.006, -0.7, 0.7);
+}
+
+function onPointerUp() {
+  if (!state.dragging) return;
+  state.dragging = false;
+  state.dragTarget = 0;
+  state.mount.canvas.classList.remove('is-dragging');
+}
+
+/* ---------- public ---------- */
+function setProgress(p) {
+  if (!state.ready) return;
+  const n = state.cards.length;
+  if (!n) return;
+  const clamped = Math.min(1, Math.max(0, p));
+  state.target = clamped * (n - 1);
+}
+
+function setVisible(v) {
+  state.visible = !!v;
+  if (state.visible) renderOnce();
+}
+
+function dispose() {
+  stopLoop();
+  window.removeEventListener('resize', applyLayout);
+  const canvas = state.mount && state.mount.canvas;
+  if (canvas) {
+    canvas.removeEventListener('pointerdown', onPointerDown);
+    canvas.removeEventListener('pointermove', onPointerMove);
+    canvas.removeEventListener('pointerup', onPointerUp);
+    canvas.removeEventListener('pointercancel', onPointerUp);
+    canvas.removeEventListener('pointerleave', onPointerUp);
+  }
+  state.cards.forEach((m) => {
+    m.geometry.dispose();
+    if (m.userData.tex) m.userData.tex.dispose();
+    m.material.dispose();
+  });
+  if (state.shadow) { state.shadow.geometry.dispose(); state.shadow.material.map.dispose(); state.shadow.material.dispose(); }
+  if (state.renderer) state.renderer.dispose();
+  state.ready = false;
+  state.cards = [];
+}
+
+window.OG3D = { mount, setProgress, setVisible, dispose, setTheme: fitTheme, state, isAvailable: () => true };
+window.dispatchEvent(new CustomEvent('og3d:ready'));

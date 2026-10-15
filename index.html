@@ -1,644 +1,446 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f5f2eb" />
-  <meta name="description" content="Shop OG Gallery — everyday shirts, denim and slides with 3D interactive experience. Find your next favourite." />
-  <title>OG Gallery — Originals for everyday</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="styles.css" />
-  
-  <!-- Three.js (local build with CDN fallback) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>OG Gallery — Shirts, Denim &amp; Slides. Baramati.</title>
+<meta name="description" content="OG Gallery is a clothing store in Baramati, Maharashtra. Shirts, denim and slides, run in small numbers and fitted in person. Free shipping across India over ₹2,500." />
+<meta name="theme-color" content="#f3efe6" />
+<meta property="og:title" content="OG Gallery — Shirts, Denim &amp; Slides" />
+<meta property="og:description" content="Small-run shirts, denim and slides. Fitted in person at Subhadra Mall, Baramati." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+
+<script type="importmap">
+{ "imports": { "three": "/vendor/three/three.module.js" } }
+</script>
 </head>
 <body>
-  <!-- 3D Scroll WebGL Canvas -->
-  <canvas id="webgl-canvas"></canvas>
 
-  <!-- 3D Scroll Progress Bar -->
-  <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+<a class="skip-link" href="#shop">Skip to the collection</a>
 
-  <!-- 3D Depth HUD Indicator -->
-  <div class="depth-indicator">
-    <span id="scrollDepthIndicator">00%</span>
-    <span>✳</span>
-    <span>3D EDITORIAL</span>
-  </div>
+<!-- ══ notice ══ -->
+<div class="notice">
+  <p>Free shipping over ₹2,500<span class="notice-dot"></span><span class="notice-hide">Ships across India in 3–5 days</span><span class="notice-dot notice-hide"></span>Subhadra Mall 06, Baramati</p>
+</div>
 
-  <!-- Audio / Sound Effects Toggle -->
-  <button class="sound-toggle-fixed" id="soundToggleBtn" aria-label="Toggle tactile sound effects">
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-    <span>Audio Off</span>
-  </button>
+<!-- ══ header ══ -->
+<header class="header" id="siteHeader">
+  <div class="header-inner">
+    <button class="icon-btn header-menu" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    </button>
 
-  <div class="content-wrapper">
-    <!-- Announcement Bar -->
-    <div class="announcement">
-      <div>
-        <span>FREE SHIPPING ON ORDERS OVER ₹2,500</span>
-        <a href="#track" class="track-link track-order-trigger">Track Order ↗</a>
-      </div>
-      <span>GOOD FINDS. GOOD FEELING. / OG GALLERY BARAMATI</span>
-    </div>
+    <a class="brand" href="#top" aria-label="OG Gallery home">
+      <span class="brand-mark">OG</span>
+      <span class="brand-word">Gallery</span>
+    </a>
 
-    <!-- Site Header -->
-    <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="OG Gallery Home">
-        <span class="og-monogram">OG</span>
-        <span class="gallery-word">GALLERY</span>
-      </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#shop" data-cat-link="all">Shop all</a>
+      <a href="#shop" data-cat-link="Shirts">Shirts</a>
+      <a href="#shop" data-cat-link="Jeans">Denim</a>
+      <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
+      <a href="#rail">The rail</a>
+      <a href="#store">Visit us</a>
+    </nav>
 
-      <nav class="main-nav" aria-label="Main navigation">
-        <a href="#shop" data-nav="all" class="selected">Shop all</a>
-        <a href="#shop" data-nav="Shirts">Shirts</a>
-        <a href="#shop" data-nav="Jeans">Denim</a>
-        <a href="#shop" data-nav="Slides_Slippers">Slides</a>
-        <a href="#reels">The feed</a>
-        <a href="#about">Our story</a>
-      </nav>
-
-        <!-- Theme Toggle (Dark / Light) -->
-        <button class="icon-action-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Dark/Light Mode">
-          <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        </button>
-
-        <!-- Quick Search -->
-        <button class="icon-action-btn search-toggle" aria-label="Search Catalog" title="Search (Press /)">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </button>
-
-        <!-- Wishlist -->
-        <button class="icon-action-btn" id="wishlistButton" aria-label="Saved Wishlist" title="Saved Wishlist">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-          <span class="icon-badge" id="wishlistCount" style="display: none;">0</span>
-        </button>
-
-        <!-- Bag / Cart -->
-        <button class="cart-header-btn" id="cartButton" aria-label="Shopping Bag">
-          <span>Bag</span>
-          <span class="bag-pill" id="cartCount">0</span>
-        </button>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="icon-action-btn menu-toggle" id="menuToggle" aria-label="Open mobile menu">☰</button>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main id="top">
-      <!-- 3D Hero Section -->
-      <section class="hero" aria-label="OG Gallery Collection Showcase">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="spark">✳</span> OG GALLERY / THE EVERYDAY EDIT</p>
-          <h1>Originals<br>for <em>everyday.</em></h1>
-          <p class="hero-description">
-            High-grade slub cottons, authentic structured denim, and cloud-soft recovery slides. Thoughtfully crafted pieces with quiet confidence.
-          </p>
-          
-          <div class="hero-cta-group">
-            <a class="pill-btn" href="#shop">
-              <span>Shop the collection</span>
-              <span>↗</span>
-            </a>
-            <a class="pill-btn-outline" href="#about">
-              <span>Our Philosophy</span>
-            </a>
-          </div>
-
-          <div class="hero-badges">
-            <span><b>24</b> Curated Pieces</span>
-            <span>•</span>
-            <span><b>100%</b> Natural Blends</span>
-            <span>•</span>
-            <span>Express Shipping</span>
-          </div>
-        </div>
-
-        <!-- Layered 3D Stage -->
-        <div class="hero-stage" id="heroStage">
-          <div class="hero-photo-back">
-            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.19%20AM.jpeg" alt="Relaxed Blue Denim" />
-          </div>
-          <div class="hero-photo-main">
-            <img src="public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.15%20AM.jpeg" alt="Colorful Everyday Shirts" />
-          </div>
-          <div class="floating-badge">
-            <span>OG GALLERY</span>
-            <b>AW / 26</b>
-            <span>AUTHENTIC</span>
-          </div>
-          <div class="hero-stamp">
-            OG<br>GALLERY<br>
-            <span>✳ BARAMATI</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Infinite Marquee Ticker -->
-      <div class="ticker" aria-label="Brand statement">
-        <div class="ticker-track">
-          <span>LESS, BUT BETTER</span>
-          <b>✳</b>
-          <span>MADE FOR THE LONG RUN</span>
-          <b>✳</b>
-          <span>YOUR EVERYDAY, ELEVATED</span>
-          <b>✳</b>
-          <span>BARAMATI STUDIO 06</span>
-          <b>✳</b>
-          <span>HONEST MATERIALS & CRAFTSMANSHIP</span>
-          <b>✳</b>
-          <span>LESS, BUT BETTER</span>
-          <b>✳</b>
-          <span>MADE FOR THE LONG RUN</span>
-          <b>✳</b>
-          <span>YOUR EVERYDAY, ELEVATED</span>
-          <b>✳</b>
-        </div>
-      </div>
-
-      <!-- 3D Interactive Showroom Section -->
-      <section class="showroom-3d-section" id="showroom">
-        <div class="showroom-header">
-          <p class="eyebrow"><span class="spark">✳</span> 3D INTERACTIVE STUDIO</p>
-          <h2>Inspect the <em>craft.</em></h2>
-          <p class="showroom-subtitle">Drag horizontally on the stage to rotate 360°, inspect piece geometries, and toggle lighting presets.</p>
-        </div>
-
-        <div class="showroom-container">
-          <div class="showroom-panel">
-            <h4>Featured Silhouettes</h4>
-            <button class="showroom-piece-btn active" data-piece="shirt" data-product-id="Shirts-0">
-              <span>👕</span> <span>Everyday Shirt</span>
-            </button>
-            <button class="showroom-piece-btn" data-piece="denim" data-product-id="Jeans-0">
-              <span>👖</span> <span>Weekender Denim</span>
-            </button>
-            <button class="showroom-piece-btn" data-piece="slide" data-product-id="Slides_Slippers-1">
-              <span>🩴</span> <span>Cloud Nine Slide</span>
-            </button>
-          </div>
-
-          <div class="showroom-stage" id="showroomStage" title="Drag horizontally to spin 360°">
-            <div class="showroom-badge-rotate">DRAG TO ROTATE 360° ↺</div>
-          </div>
-
-          <div class="showroom-panel">
-            <h4>Studio Lighting</h4>
-            <p style="font-size: 11px; color: var(--muted); margin-bottom: 8px;">Simulate ambiance:</p>
-            <div class="lighting-swatches">
-              <button class="lighting-btn active" data-light="studio">Studio</button>
-              <button class="lighting-btn" data-light="sunset">Sunset</button>
-              <button class="lighting-btn" data-light="midnight">Midnight</button>
-            </div>
-            <button class="pill-btn-small" id="inspectShowroomPieceBtn" style="width: 100%; margin-top: 20px; text-align: center; justify-content: center; display: flex;">
-              Quick View Piece ↗
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Shop Section with 3D Card Tilts -->
-      <section class="shop-section" id="shop">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow" id="productCount">THE OG SELECTION / 24 PIECES</p>
-            <h2>Good finds<span>.</span></h2>
-            <p class="section-subtitle">Everyday favourites, ready to meet you. Interactive 3D cards tilt on hover.</p>
-          </div>
-        </div>
-
-        <!-- Controls: Filters, View Mode, Sort -->
-        <div class="shop-controls">
-          <div class="filters-group" role="group" aria-label="Filter products">
-            <button class="filter-chip active" data-filter="all">Everything</button>
-            <button class="filter-chip" data-filter="Shirts">Shirts</button>
-            <button class="filter-chip" data-filter="Jeans">Denim</button>
-            <button class="filter-chip" data-filter="Slides_Slippers">Slides</button>
-          </div>
-
-          <div class="controls-right">
-            <!-- View switch: 4 columns or 2 columns -->
-            <div class="view-switch">
-              <button class="view-btn active" id="viewGridBtn" title="4-Column Grid">Grid</button>
-              <button class="view-btn" id="viewFocusBtn" title="2-Column Detailed View">Focus</button>
-            </div>
-
-            <!-- Sort dropdown -->
-            <div class="sort-wrap">
-              <label for="sortSelect">Sort:</label>
-              <select id="sortSelect">
-                <option value="featured">Featured</option>
-                <option value="low">Price: Low to High</option>
-                <option value="high">Price: High to Low</option>
-                <option value="rating">Top Rated</option>
-                <option value="new">Newest First</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Products Grid Container -->
-        <div class="product-grid" id="productGrid"></div>
-      </section>
-
-      <!-- Editorial Reels Feed Section -->
-      <section class="reels-section" id="reels">
-        <div class="reels-heading">
-          <div>
-            <p class="eyebrow">A LITTLE OG ENERGY</p>
-            <h2>From the <em>feed.</em></h2>
-          </div>
-          <a class="pill-btn-outline" href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">
-            <span>Follow @og._gallery</span>
-            <span>↗</span>
-          </a>
-        </div>
-        <p class="reels-intro">
-          Shop-floor moments, new arrivals, and fits out in the wild. Catch our latest drop highlights.
-        </p>
-        <div class="reels-grid">
-          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DedXbU3oh1t/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 01">
-            <img src="public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg" alt="OG Gallery Shirt Reel" />
-            <span class="reel-play">▶</span>
-            <span class="reel-tag">WATCH REEL</span>
-            <span class="reel-number">01</span>
-          </a>
-          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeVx41Po8iY/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 02">
-            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(1).jpeg" alt="OG Gallery Denim Reel" />
-            <span class="reel-play">▶</span>
-            <span class="reel-tag">WATCH REEL</span>
-            <span class="reel-number">02</span>
-          </a>
-          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeTCmWTINgs/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 03">
-            <img src="public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.14%20AM.jpeg" alt="OG Gallery Slides Reel" />
-            <span class="reel-play">▶</span>
-            <span class="reel-tag">WATCH REEL</span>
-            <span class="reel-number">03</span>
-          </a>
-          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeM9ujWIUYF/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 04">
-            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.20%20AM.jpeg" alt="OG Gallery Streetwear Reel" />
-            <span class="reel-play">▶</span>
-            <span class="reel-tag">WATCH REEL</span>
-            <span class="reel-number">04</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Brand Story & Manifesto -->
-      <section class="manifesto" id="about">
-        <div class="manifesto-image">
-          <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(1).jpeg" alt="Denim picked at OG Gallery" />
-          <span class="image-caption">GOOD FINDS. GOOD FEELING. — OG GALLERY</span>
-        </div>
-        <div class="manifesto-copy">
-          <p class="eyebrow">A NOTE FROM OG GALLERY</p>
-          <h2>Find your<br><em>own thing.</em></h2>
-          <p>
-            We curate the pieces you reach for on repeat — easy silhouettes, honest weights, and small details that make everyday garments feel truly personal. Rooted in Baramati, made for your daily flow.
-          </p>
-          <a href="#shop" class="text-link">
-            <span>Explore the current collection</span>
-            <span>↗</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Newsletter with Backend Integration -->
-      <section class="newsletter">
-        <div>
-          <p class="eyebrow">A LITTLE SOMETHING IN YOUR INBOX</p>
-          <h2>Good things, <em>occasionally.</em></h2>
-        </div>
-        <div>
-          <form id="newsletterForm">
-            <label for="emailInput" class="sr-only">Your email address</label>
-            <input id="emailInput" type="email" placeholder="Enter your email for 10% off" required />
-            <button type="submit">Count me in <span>↗</span></button>
-          </form>
-          <small id="newsletterMessage">No spam. Just arrivals & invites. Welcome code: OGFIRST10.</small>
-        </div>
-      </section>
-    </main>
-
-    <!-- Site Footer -->
-    <footer class="site-footer">
-      <a class="wordmark" href="#top">
-        <span class="og-monogram">OG</span>
-        <span class="gallery-word">GALLERY</span>
-      </a>
-      <a href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">
-        INSTAGRAM / @OG._GALLERY ↗
-      </a>
-      <a href="#track" class="track-order-trigger">
-        TRACK AN ORDER ↗
-      </a>
-      <span>SUBHADRA MALL 06 / BARAMATI, MH</span>
-      <span>© OG GALLERY 2026</span>
-      <a href="#top">BACK TO TOP ↑</a>
-    </footer>
-  </div>
-
-  <!-- ==================== DRAWERS & MODALS ==================== -->
-
-  <!-- Drawer Overlay Backdrop -->
-  <div class="drawer-overlay" id="cartOverlay"></div>
-
-  <!-- Slide-out Bag (Cart) Drawer -->
-  <aside class="slide-drawer" id="cartDrawer" aria-label="Shopping Bag">
-    <div class="drawer-header">
-      <h3>Your Bag (<span id="cartCountDrawer">0</span>)</h3>
-      <button class="drawer-close" id="closeCartBtn" aria-label="Close Bag">✕</button>
-    </div>
-
-    <!-- Free Shipping Progress -->
-    <div class="shipping-progress-wrap">
-      <p class="shipping-text" id="shippingProgressText">Add ₹2,500 for Free Shipping</p>
-      <div class="shipping-bar-bg">
-        <div class="shipping-bar-fill" id="shippingProgressBar"></div>
-      </div>
-    </div>
-
-    <div class="drawer-body" id="cartItemsList"></div>
-
-    <!-- Coupon Code Input -->
-    <div class="promo-box">
-      <div class="promo-input-row">
-        <input type="text" id="promoInput" placeholder="Promo code (e.g. OGFIRST10, OG200)" />
-        <button class="pill-btn-small" id="applyPromoBtn">Apply</button>
-      </div>
-      <div class="promo-tag" id="appliedPromoTag"></div>
-    </div>
-
-    <div class="drawer-footer">
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <span id="cartSubtotal">₹0</span>
-      </div>
-      <div class="summary-row" style="display: none;">
-        <span>Discount</span>
-        <span id="cartDiscount">-₹0</span>
-      </div>
-      <div class="summary-row">
-        <span>Estimated Delivery</span>
-        <span id="cartShipping">₹0</span>
-      </div>
-      <div class="summary-row total-row">
-        <span>Total</span>
-        <span id="cartTotal">₹0</span>
-      </div>
-      <button class="checkout-btn" id="proceedCheckoutBtn">
-        <span>Proceed to Checkout</span>
-        <span>→</span>
+    <div class="header-tools">
+      <button class="icon-btn" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10 1.4 1.4m0-12.8-1.4 1.4m-10 10L5.6 18.4"/><circle cx="12" cy="12" r="4"/></svg>
+      </button>
+      <button class="icon-btn" id="searchToggle" aria-label="Search products">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" id="wishlistToggle" aria-label="Open saved items">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z"/></svg>
+        <span class="count" id="wishlistCount" hidden>0</span>
+      </button>
+      <button class="icon-btn bag" id="cartToggle" aria-label="Open bag">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="count" id="cartCount" hidden>0</span>
       </button>
     </div>
-  </aside>
-
-  <!-- Wishlist Drawer -->
-  <aside class="slide-drawer" id="wishlistDrawer" aria-label="Saved Pieces">
-    <div class="drawer-header">
-      <h3>Saved Pieces</h3>
-      <button class="drawer-close" id="closeWishlistBtn" aria-label="Close Wishlist">✕</button>
-    </div>
-    <div class="drawer-body" id="wishlistItemsList"></div>
-  </aside>
-
-  <!-- Quick View / Product Detail Modal -->
-  <div class="modal-overlay" id="quickViewModal">
-    <div class="modal-card">
-      <button class="modal-close-btn" id="closeQuickViewBtn" aria-label="Close modal">✕</button>
-      <div id="quickViewContent"></div>
-    </div>
   </div>
+</header>
 
-  <!-- Complete Checkout Modal -->
-  <div class="modal-overlay" id="checkoutModal">
-    <div class="modal-card checkout-modal-card">
-      <button class="modal-close-btn" id="closeCheckoutBtn" aria-label="Close checkout">✕</button>
-      <form id="checkoutForm">
-        <div class="checkout-grid">
-          <div class="checkout-form-col">
-            <h3>Shipping & Contact</h3>
-            <div class="form-group">
-              <label for="checkoutName">Full Name</label>
-              <input type="text" id="checkoutName" placeholder="Deva Kale" required />
-            </div>
-            <div class="form-two-col">
-              <div class="form-group">
-                <label for="checkoutEmail">Email Address</label>
-                <input type="email" id="checkoutEmail" placeholder="you@example.com" required />
-              </div>
-              <div class="form-group">
-                <label for="checkoutPhone">Phone Number</label>
-                <input type="tel" id="checkoutPhone" placeholder="+91 98765 43210" required />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="checkoutAddress">Street Address / Apartment</label>
-              <input type="text" id="checkoutAddress" placeholder="Flat 402, Royal Palms, MG Road" required />
-            </div>
-            <div class="form-two-col">
-              <div class="form-group">
-                <label for="checkoutCity">City</label>
-                <input type="text" id="checkoutCity" value="Baramati" required />
-              </div>
-              <div class="form-group">
-                <label for="checkoutState">State</label>
-                <input type="text" id="checkoutState" value="Maharashtra" required />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="checkoutPincode">PIN Code</label>
-              <input type="text" id="checkoutPincode" placeholder="413102" required />
-            </div>
+<!-- ══ mobile menu ══ -->
+<div class="sheet-overlay" id="menuOverlay" hidden></div>
+<nav class="sheet sheet-left" id="mobileMenu" aria-label="Menu" hidden>
+  <div class="sheet-head">
+    <span class="sheet-title">Menu</span>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <a href="#shop" data-cat-link="all">Shop all</a>
+  <a href="#shop" data-cat-link="Shirts">Shirts</a>
+  <a href="#shop" data-cat-link="Jeans">Denim</a>
+  <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
+  <a href="#rail">The rail</a>
+  <a href="#store">Visit us</a>
+  <a href="#" data-open="track">Track an order</a>
+</nav>
 
-            <h3 style="margin-top: 24px;">Payment Method</h3>
-            <div class="payment-options">
-              <label class="payment-radio">
-                <input type="radio" name="paymentMethod" value="UPI / QR Code" checked />
-                <span>UPI / QR Code (Google Pay, PhonePe, Paytm)</span>
-              </label>
-              <label class="payment-radio">
-                <input type="radio" name="paymentMethod" value="Cash on Delivery" />
-                <span>Cash on Delivery (Pay upon delivery)</span>
-              </label>
-              <label class="payment-radio">
-                <input type="radio" name="paymentMethod" value="Card Payment" />
-                <span>Credit / Debit Card (Visa, Mastercard, RuPay)</span>
-              </label>
-            </div>
+<div id="homeView">
+<main id="top">
 
-            <!-- Interactive UPI QR Code Card -->
-            <div class="upi-qr-card show" id="upiQrCard">
-              <p style="font-size: 11px; font-weight: 700; margin-bottom: 8px;">Scan with Any UPI App</p>
-              <div class="qr-code-box">
-                <svg viewBox="0 0 100 100" fill="currentColor">
-                  <path d="M10,10 h30 v30 h-30 z M15,15 v20 h20 v-20 z M20,20 h10 v10 h-10 z"/>
-                  <path d="M60,10 h30 v30 h-30 z M65,15 v20 h20 v-20 z M70,20 h10 v10 h-10 z"/>
-                  <path d="M10,60 h30 v30 h-30 z M15,65 v20 h20 v-20 z M20,70 h10 v10 h-10 z"/>
-                  <rect x="45" y="10" width="8" height="8"/>
-                  <rect x="45" y="25" width="8" height="15"/>
-                  <rect x="10" y="45" width="15" height="8"/>
-                  <rect x="30" y="45" width="10" height="8"/>
-                  <rect x="45" y="45" width="10" height="10"/>
-                  <rect x="60" y="45" width="15" height="8"/>
-                  <rect x="80" y="45" width="10" height="8"/>
-                  <rect x="45" y="60" width="8" height="20"/>
-                  <rect x="60" y="60" width="12" height="12"/>
-                  <rect x="75" y="60" width="15" height="8"/>
-                  <rect x="60" y="75" width="8" height="15"/>
-                  <rect x="75" y="75" width="15" height="15"/>
-                </svg>
-              </div>
-              <span class="upi-id-badge">og.gallery@okhdfcbank</span>
-              <p class="upi-timer">Instant verification upon order confirmation</p>
-            </div>
-          </div>
+  <!-- ══ hero ══ -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Subhadra Mall 06 · Baramati</p>
+      <h1 class="hero-title">Made to be<br /><em>worn out.</em></h1>
+      <p class="hero-lede">Shirts, denim and slides for people who find the one thing that fits and wear it until it gives in. Small runs, cut clean, kept honest on price.</p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#shop">Shop the collection</a>
+        <a class="btn btn-quiet" href="#rail">See them on the rail</a>
+      </div>
+      <dl class="hero-facts">
+        <div><dt>In stock</dt><dd id="factCount">24 pieces</dd></div>
+        <div><dt>Shipping</dt><dd>Free over ₹2,500</dd></div>
+        <div><dt>Returns</dt><dd>7 days, unused</dd></div>
+      </dl>
+    </div>
+    <figure class="hero-figure">
+      <img id="heroImage" src="/public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg" alt="A crisp shirt from the OG Gallery rail" width="900" height="1200" fetchpriority="high" />
+      <figcaption id="heroCaption">The Everyday Shirt · ₹1,290</figcaption>
+    </figure>
+  </section>
 
-          <div class="checkout-summary-col">
-            <h3>Order Summary</h3>
-            <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
-            <div class="summary-row">
-              <span>Subtotal</span>
-              <span id="checkoutSummarySubtotal">₹0</span>
-            </div>
-            <div class="summary-row">
-              <span>Discount</span>
-              <span id="checkoutSummaryDiscount">₹0</span>
-            </div>
-            <div class="summary-row">
-              <span>Shipping</span>
-              <span id="checkoutSummaryShipping">FREE</span>
-            </div>
-            <div class="summary-row total-row">
-              <span>Grand Total</span>
-              <span id="checkoutSummaryTotal">₹0</span>
-            </div>
-            <button type="submit" class="checkout-btn" id="placeOrderBtn" style="margin-top: 24px;">
-              <span>Confirm & Place Order</span>
-              <span>→</span>
-            </button>
-          </div>
+  <!-- ══ the rail (3D) ══ -->
+  <section class="rail" id="rail">
+    <div class="rail-track" id="railTrack">
+      <div class="rail-sticky">
+        <canvas id="railCanvas" aria-hidden="true"></canvas>
+        <div class="rail-fallback" id="railFallback" hidden></div>
+
+        <header class="rail-head">
+          <p class="eyebrow">The rail</p>
+          <h2>Twelve pieces, up close.</h2>
+          <p class="rail-sub">Scroll to travel the rail. Press and drag a piece to turn it.</p>
+        </header>
+
+        <div class="rail-meta">
+          <p class="rail-index"><span id="railCounter">01</span><span class="rail-sep">/</span><span id="railTotal">12</span></p>
+          <p class="rail-cat" id="railCat">Shirts</p>
+          <h3 class="rail-name" id="railName">—</h3>
+          <p class="rail-price" id="railPrice">—</p>
+          <button class="btn btn-solid btn-sm" id="railView" type="button">View piece</button>
         </div>
+
+        <div class="rail-dots" id="railDots" role="tablist" aria-label="Rail pieces"></div>
+        <p class="rail-hint" id="railHint">Scroll</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ shop ══ -->
+  <section class="shop" id="shop">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">The collection</p>
+        <h2 id="shopTitle">Everything in store</h2>
+      </div>
+      <p class="section-count"><span id="resultCount">—</span> pieces</p>
+    </header>
+
+    <div class="toolbar">
+      <div class="chips" id="filterChips" role="group" aria-label="Filter by category">
+        <button class="chip is-on" data-category="all" aria-pressed="true">All</button>
+        <button class="chip" data-category="Shirts" aria-pressed="false">Shirts</button>
+        <button class="chip" data-category="Jeans" aria-pressed="false">Denim</button>
+        <button class="chip" data-category="Slides_Slippers" aria-pressed="false">Slides</button>
+      </div>
+
+      <div class="toolbar-right">
+        <label class="field field-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="catalogSearch" placeholder="Search the rack" aria-label="Search the collection" />
+        </label>
+        <label class="field field-select">
+          <span class="sr-only">Sort products</span>
+          <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="new">Newest</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+            <option value="rating">Top rated</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="grid" id="productGrid" aria-live="polite"></div>
+    <div class="empty" id="emptyState" hidden>
+      <h3>Nothing matches that.</h3>
+      <p>Try another word, or clear the filters.</p>
+      <button class="btn btn-solid btn-sm" id="emptyReset" type="button">Clear filters</button>
+    </div>
+  </section>
+
+  <!-- ══ store ══ -->
+  <section class="store" id="store">
+    <figure class="store-figure">
+      <img src="/public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.23%20AM.jpeg" alt="Denim on the rack at OG Gallery" loading="lazy" />
+    </figure>
+    <div class="store-copy">
+      <p class="eyebrow">The store</p>
+      <h2>A shop you can walk into.</h2>
+      <p>OG Gallery is a real counter in Subhadra Mall, Baramati — not a warehouse with a logo. Come in and try things on before you buy. If a size is gone, we will check the back.</p>
+      <p>Prices are the same in the shop and online. No fake marked-down numbers.</p>
+      <ul class="store-list">
+        <li><span>Address</span>Subhadra Mall 06, Baramati, Maharashtra 413102</li>
+        <li><span>Instagram</span><a href="https://instagram.com/og._gallery" target="_blank" rel="noopener">@og._gallery</a></li>
+        <li><span>Orders</span>Track any order with its OG number</li>
+      </ul>
+      <button class="btn btn-outline" id="storeTrackBtn" type="button">Track an order</button>
+    </div>
+  </section>
+
+  <!-- ══ newsletter ══ -->
+  <section class="letter">
+    <div class="letter-inner">
+      <p class="eyebrow">The list</p>
+      <h2>Ten percent off the first one.</h2>
+      <p>Restocks, new drops and nothing else. Use the code at checkout.</p>
+      <form class="letter-form" id="newsletterForm" novalidate>
+        <input type="email" id="newsletterEmail" placeholder="you@email.com" aria-label="Email address" required />
+        <button class="btn btn-solid" type="submit">Get the code</button>
       </form>
+      <p class="letter-note" id="newsletterNote" role="status"></p>
     </div>
-  </div>
+  </section>
 
-  <!-- Order Confirmation Modal -->
-  <div class="modal-overlay" id="orderConfirmModal">
-    <div class="modal-card confirm-card">
-      <div class="confirm-check-icon">✓</div>
-      <h2>Order Placed Successfully!</h2>
-      <p>Thank you, <b id="confirmCustomerName">Friend</b>. We're getting your pieces ready for packing.</p>
-      
-      <div class="confirm-order-id-badge">
-        ORDER ID: <span id="confirmOrderId">OG-00000</span>
+</main>
+</div>
+
+<!-- ══ product page ══ -->
+<main class="pdp" id="pdpView" hidden></main>
+
+<!-- ══ footer ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-mark">OG</span>
+      <p>Shirts, denim and slides. Baramati, Maharashtra.</p>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h3>Shop</h3>
+        <a href="#shop" data-cat-link="Shirts">Shirts</a>
+        <a href="#shop" data-cat-link="Jeans">Denim</a>
+        <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
       </div>
-
-      <div class="confirm-details-box">
-        <div class="confirm-details-row">
-          <span>Delivery Address:</span>
-          <b id="confirmAddress">Baramati, MH</b>
-        </div>
-        <div class="confirm-details-row">
-          <span>Payment Mode:</span>
-          <b id="confirmPayment">UPI</b>
-        </div>
-        <div class="confirm-details-row">
-          <span>Estimated Delivery:</span>
-          <b id="confirmDeliveryDate">In 3-4 days</b>
-        </div>
-        <div class="confirm-details-row" style="margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 8px;">
-          <span>Total Paid:</span>
-          <b id="confirmTotal">₹0</b>
-        </div>
+      <div>
+        <h3>Help</h3>
+        <a href="#" data-open="track">Track an order</a>
+        <a href="#store">Shipping &amp; returns</a>
+        <a href="#" id="footerSizeLink">Size help</a>
       </div>
-
-      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <button class="pill-btn" id="trackNewOrderBtn">
-          <span>Track Order Status</span>
-          <span>↗</span>
-        </button>
-        <button class="pill-btn-outline" id="printInvoiceBtn">
-          <span>Print Receipt ⎙</span>
-        </button>
-        <button class="pill-btn-outline" id="closeConfirmBtn">
-          <span>Continue Shopping</span>
-        </button>
+      <div>
+        <h3>Visit</h3>
+        <a href="https://instagram.com/og._gallery" target="_blank" rel="noopener">Instagram</a>
+        <span>Subhadra Mall 06</span>
+        <span>Baramati 413102</span>
       </div>
     </div>
   </div>
+  <div class="footer-base">
+    <p>© <span id="year">2026</span> OG Gallery</p>
+    <p>Built in Baramati</p>
+  </div>
+</footer>
 
-  <!-- Track Order Modal -->
-  <div class="modal-overlay" id="trackOrderModal">
-    <div class="modal-card track-card">
-      <button class="modal-close-btn" id="closeTrackBtn" aria-label="Close track order">✕</button>
-      <p class="eyebrow">OG GALLERY FULFILLMENT</p>
-      <h2>Track Your Order</h2>
-      <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">Enter your OG Order ID (e.g. OG-78419) to view real-time transit status.</p>
-      
-      <form class="track-form" id="trackOrderForm">
-        <input type="text" id="trackOrderInput" placeholder="Enter Order ID (e.g. OG-78419)" required />
-        <button type="submit" class="pill-btn">
-          <span>Search</span>
-        </button>
+<!-- ══ bag ══ -->
+<div class="sheet-overlay" id="cartOverlay" hidden></div>
+<aside class="sheet sheet-right" id="cartDrawer" aria-label="Your bag" hidden>
+  <div class="sheet-head">
+    <span class="sheet-title">Your bag</span>
+    <button class="icon-btn" id="cartClose" aria-label="Close bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+
+  <div class="ship-strip" id="shipStrip">
+    <p id="shipText">Free shipping over ₹2,500</p>
+    <div class="ship-bar"><span id="shipFill"></span></div>
+  </div>
+
+  <div class="sheet-body" id="cartItems"></div>
+  <p class="empty-note" id="cartEmpty">Your bag is empty. <a href="#shop" data-close-sheets>Have a look at the rail.</a></p>
+
+  <div class="sheet-foot">
+    <form class="promo" id="promoForm" novalidate>
+      <input type="text" id="promoInput" placeholder="Promo code" aria-label="Promo code" autocomplete="off" />
+      <button class="btn btn-outline btn-sm" type="submit">Apply</button>
+    </form>
+    <p class="promo-tag" id="promoApplied" hidden></p>
+    <dl class="totals">
+      <div><dt>Subtotal</dt><dd id="lineSubtotal">₹0</dd></div>
+      <div id="lineDiscountRow" hidden><dt>Discount</dt><dd id="lineDiscount">−₹0</dd></div>
+      <div><dt>Shipping</dt><dd id="lineShipping">—</dd></div>
+      <div class="totals-grand"><dt>Total</dt><dd id="lineTotal">₹0</dd></div>
+    </dl>
+    <button class="btn btn-solid btn-block" id="checkoutBtn" type="button">Checkout</button>
+  </div>
+</aside>
+
+<!-- ══ saved ══ -->
+<div class="sheet-overlay" id="wishlistOverlay" hidden></div>
+<aside class="sheet sheet-right" id="wishlistDrawer" aria-label="Saved items" hidden>
+  <div class="sheet-head">
+    <span class="sheet-title">Saved</span>
+    <button class="icon-btn" id="wishlistClose" aria-label="Close saved items"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="sheet-body" id="wishlistItems"></div>
+  <p class="empty-note" id="wishlistEmpty">Nothing saved yet. Tap the heart on a piece you like.</p>
+  <div class="sheet-foot">
+    <button class="btn btn-outline btn-block" id="wishlistAddAll" type="button">Add everything to bag</button>
+  </div>
+</aside>
+
+<!-- ══ search ══ -->
+<div class="search" id="searchOverlay" hidden>
+  <div class="search-card">
+    <div class="search-head">
+      <label class="field field-search field-search-lg">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="searchInput" placeholder="Search shirts, denim, slides…" aria-label="Search" />
+      </label>
+      <button class="icon-btn" id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+    <p class="search-hint" id="searchHint">Start typing. Six results at a time.</p>
+  </div>
+</div>
+
+<!-- ══ checkout ══ -->
+<div class="modal" id="checkoutModal" hidden>
+  <div class="modal-scrim" id="checkoutOverlay"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal-head">
+      <h2 id="checkoutTitle">Checkout</h2>
+      <button class="icon-btn" id="checkoutClose" aria-label="Close checkout"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form class="checkout-form" id="checkoutForm" novalidate>
+        <fieldset>
+          <legend>Who is it for</legend>
+          <div class="rows-2">
+            <label class="field"><span>Full name</span><input id="checkoutName" required autocomplete="name" /></label>
+            <label class="field"><span>Email</span><input id="checkoutEmail" type="email" required autocomplete="email" /></label>
+          </div>
+          <label class="field"><span>Phone</span><input id="checkoutPhone" type="tel" required autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" /></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Where it goes</legend>
+          <label class="field"><span>Address</span><input id="checkoutAddress" required autocomplete="street-address" placeholder="House, street, landmark" /></label>
+          <div class="rows-3">
+            <label class="field"><span>City</span><input id="checkoutCity" required value="Baramati" autocomplete="address-level2" /></label>
+            <label class="field"><span>State</span><input id="checkoutState" required value="Maharashtra" autocomplete="address-level1" /></label>
+            <label class="field"><span>PIN code</span><input id="checkoutPincode" required inputmode="numeric" pattern="[0-9]{6}" placeholder="413102" autocomplete="postal-code" /></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>How you pay</legend>
+          <div class="pay" id="paymentOptions">
+            <label class="pay-opt is-on">
+              <input type="radio" name="payment" value="UPI" checked />
+              <span class="pay-name">UPI</span>
+              <span class="pay-note">Pay from any UPI app</span>
+            </label>
+            <label class="pay-opt">
+              <input type="radio" name="payment" value="COD" />
+              <span class="pay-name">Cash on delivery</span>
+              <span class="pay-note">Pay the courier</span>
+            </label>
+            <label class="pay-opt">
+              <input type="radio" name="payment" value="Card" />
+              <span class="pay-name">Card on delivery</span>
+              <span class="pay-note">Swipe at the door</span>
+            </label>
+          </div>
+          <div class="upi" id="upiBox">
+            <p>Complete the UPI transfer after placing the order. The amount and order number will be on the confirmation.</p>
+          </div>
+        </fieldset>
+
+        <p class="form-error" id="checkoutError" role="alert" hidden></p>
       </form>
 
-      <div id="trackOrderStatus">
-        <p style="font-size: 11px; color: var(--muted); text-align: center; padding: 20px 0;">
-          Tip: Try entering sample order ID <b>OG-78419</b> to preview live status tracking.
-        </p>
-      </div>
+      <aside class="checkout-side">
+        <h3>Order summary</h3>
+        <div class="checkout-items" id="checkoutItems"></div>
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd id="coSubtotal">₹0</dd></div>
+          <div id="coDiscountRow" hidden><dt>Discount</dt><dd id="coDiscount">−₹0</dd></div>
+          <div><dt>Shipping</dt><dd id="coShipping">—</dd></div>
+          <div class="totals-grand"><dt>Total</dt><dd id="coTotal">₹0</dd></div>
+        </dl>
+        <button class="btn btn-solid btn-block" id="placeOrderBtn" type="button">Place order</button>
+        <p class="fine">You will get an order number to track it with.</p>
+      </aside>
     </div>
   </div>
+</div>
 
-  <!-- Instant Search Overlay -->
-  <div class="modal-overlay" id="searchOverlay">
-    <div class="modal-card search-overlay-card">
-      <button class="modal-close-btn" id="closeSearchBtn" aria-label="Close search">✕</button>
-      <p class="eyebrow">SEARCH THE OG EDIT</p>
-      <div class="search-input-wrap">
-        <input type="text" id="searchInput" placeholder="Search shirts, denim, slides, fabrics…" autocomplete="off" />
-      </div>
-      <div id="searchResults"></div>
+<!-- ══ confirmation ══ -->
+<div class="modal" id="confirmModal" hidden>
+  <div class="modal-scrim" id="confirmOverlay"></div>
+  <div class="modal-card modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-head">
+      <h2 id="confirmTitle">Order placed</h2>
+      <button class="icon-btn" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="modal-body confirm" id="confirmBody"></div>
+    <div class="modal-foot">
+      <button class="btn btn-solid" id="trackNowBtn" type="button">Track this order</button>
+      <button class="btn btn-outline" id="printReceiptBtn" type="button">Print receipt</button>
     </div>
   </div>
+</div>
 
-  <!-- Mobile Bottom Navigation Bar -->
-  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
-    <a href="#top" class="mobile-nav-item active">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      <span>Home</span>
-    </a>
-    <a href="#shop" class="mobile-nav-item">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-      <span>Shop</span>
-    </a>
-    <button class="mobile-nav-item search-toggle">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <span>Search</span>
-    </button>
-    <button class="mobile-nav-item" id="mobileWishlistBtn">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-      <span>Saved</span>
-    </button>
-    <button class="mobile-nav-item" id="mobileCartBtn">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-      <span>Bag (<b id="mobileCartCount">0</b>)</span>
-    </button>
-  </nav>
+<!-- ══ tracking ══ -->
+<div class="modal" id="trackModal" hidden>
+  <div class="modal-scrim" id="trackOverlay"></div>
+  <div class="modal-card modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="trackTitle">
+    <div class="modal-head">
+      <h2 id="trackTitle">Track an order</h2>
+      <button class="icon-btn" id="trackClose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <form class="track-form" id="trackForm" novalidate>
+        <label class="field"><span>Order number</span><input id="trackInput" placeholder="OG-00001" autocomplete="off" /></label>
+        <button class="btn btn-solid" type="submit">Find it</button>
+      </form>
+      <p class="form-error" id="trackError" role="alert" hidden></p>
+      <div id="trackResult"></div>
+    </div>
+  </div>
+</div>
 
-  <!-- Floating Toast Notification -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- ══ image lightbox ══ -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="icon-btn lightbox-close" id="lightboxClose" aria-label="Close image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <img id="lightboxImg" alt="" />
+</div>
 
-  <!-- Application Scripts -->
-  <script src="public/js/sound.js"></script>
-  <script src="public/js/api.js"></script>
-  <script src="public/js/three-scene.js"></script>
-  <script src="public/js/app.js"></script>
+<!-- ══ mobile tab bar ══ -->
+<nav class="tabbar" aria-label="Quick access">
+  <a href="#top" class="tab" data-tab="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4v-9Z"/></svg><span>Home</span></a>
+  <a href="#shop" class="tab" data-tab="shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-1 13H5L4 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>Shop</span></a>
+  <button class="tab" id="tabSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span></button>
+  <button class="tab" id="tabWishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z"/></svg><span>Saved</span></button>
+  <button class="tab" id="tabCart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Bag</span><span class="count" id="tabCartCount" hidden>0</span></button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/public/vendor/lenis.min.js" defer></script>
+<script type="module" src="/public/js/three-scene.js"></script>
+<script src="/public/js/api.js" defer></script>
+<script src="/public/js/app.js" defer></script>
 </body>
 </html>

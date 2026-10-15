@@ -1,12 +1,12 @@
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// No CORS: the shop is served from this same origin, so other sites
+// should not be able to post orders from your visitors' browsers.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -41,9 +41,12 @@ function writeJson(filename, data) {
 // Serve node_modules/three/build for local offline Three.js access
 app.use('/vendor/three', express.static(path.join(__dirname, 'node_modules', 'three', 'build')));
 
-// Serve static assets
-app.use(express.static(path.join(__dirname)));
+// Serve static assets. Only public/ is exposed plus an explicit allow-list of
+// root files — data/, node_modules/ and server.js are never web-reachable.
 app.use('/public', express.static(path.join(__dirname, 'public')));
+for (const file of ['styles.css', 'favicon.svg', 'robots.txt']) {
+  app.get('/' + file, (req, res) => res.sendFile(path.join(__dirname, file)));
+}
 
 // ---------------- API ROUTES ----------------
 
@@ -148,7 +151,7 @@ app.get('/api/products/:id', (req, res) => {
 
 // Promo code validation
 app.post('/api/promo/validate', (req, res) => {
-  const { code, subtotal } = req.body;
+  const { code, subtotal } = req.body || {};
   if (!code) {
     return res.status(400).json({ error: 'Promo code is required' });
   }
@@ -189,7 +192,7 @@ app.post('/api/promo/validate', (req, res) => {
 
 // Place Order
 app.post('/api/orders', (req, res) => {
-  const { customer, shipping, items, paymentMethod, promoCode } = req.body;
+  const { customer, shipping, items, paymentMethod, promoCode } = req.body || {};
 
   if (!customer || !customer.name || !customer.email || !customer.phone) {
     return res.status(400).json({ error: 'Customer name, email, and phone are required.' });
@@ -207,36 +210,48 @@ app.post('/api/orders', (req, res) => {
   const orders = readJson('orders.json', []);
   const promos = readJson('promos.json', {});
 
-  // Calculate pricing securely from catalog
+  // Price every line from our own catalog and refuse anything we cannot
+  // sell: unknown products, or more units than we actually hold in stock.
   let subtotal = 0;
-  const verifiedItems = items.map(item => {
+  const verifiedItems = [];
+  for (const item of items) {
     const catalogItem = products.find(p => p.id === item.id);
-    const price = catalogItem ? catalogItem.price : (item.price || 0);
-    const quantity = Math.max(1, Number(item.quantity) || 1);
-    subtotal += price * quantity;
-
-    // Decrement stock if available
-    if (catalogItem && catalogItem.stock > 0) {
-      catalogItem.stock = Math.max(0, catalogItem.stock - quantity);
+    if (!catalogItem) {
+      return res.status(400).json({ error: 'That product is no longer in the catalogue.' });
     }
 
-    return {
-      id: item.id,
-      name: item.name || (catalogItem ? catalogItem.name : 'Unknown Product'),
-      price,
+    const quantity = Math.max(1, Math.floor(Number(item.quantity) || 1));
+    if (quantity > catalogItem.stock) {
+      return res.status(400).json({
+        error: catalogItem.stock === 0
+          ? `${catalogItem.name} is sold out.`
+          : `Only ${catalogItem.stock} left of ${catalogItem.name}.`
+      });
+    }
+
+    subtotal += catalogItem.price * quantity;
+    catalogItem.stock -= quantity;
+
+    verifiedItems.push({
+      id: catalogItem.id,
+      name: catalogItem.name,
+      price: catalogItem.price,
       size: item.size || 'Standard',
       quantity,
-      image: catalogItem ? catalogItem.image : item.image
-    };
-  });
+      image: catalogItem.image
+    });
+  }
 
   // Calculate discounts & shipping
   let discount = 0;
   let freeShippingApplied = subtotal >= 2500;
+  let appliedPromo = null;
 
   if (promoCode) {
     const promo = promos[promoCode.trim().toUpperCase()];
-    if (promo) {
+    // A code only counts when the cart reaches its minimum spend.
+    if (promo && (!promo.minOrder || subtotal >= promo.minOrder)) {
+      appliedPromo = promo;
       if (promo.type === 'percentage') {
         discount = Math.round((subtotal * promo.value) / 100);
       } else if (promo.type === 'fixed') {
@@ -250,9 +265,11 @@ app.post('/api/orders', (req, res) => {
   const shippingFee = freeShippingApplied ? 0 : 150;
   const total = Math.max(0, subtotal - discount + shippingFee);
 
-  // Generate unique order ID
-  const orderNumber = Math.floor(10000 + Math.random() * 90000);
-  const orderId = `OG-${orderNumber}`;
+  // A duplicate ID would send tracking to the wrong order.
+  let orderId;
+  do {
+    orderId = `OG-${Math.floor(10000 + Math.random() * 90000)}`;
+  } while (orders.some(o => o.orderId === orderId));
   const now = new Date();
   const estimatedDate = new Date(now.getTime() + 4 * 24 * 60 * 60 * 1000);
 
@@ -274,7 +291,7 @@ app.post('/api/orders', (req, res) => {
     pricing: {
       subtotal,
       discount,
-      promoCode: promoCode ? promoCode.toUpperCase() : null,
+      promoCode: appliedPromo ? appliedPromo.code : null,
       shipping: shippingFee,
       total
     },
@@ -326,6 +343,31 @@ app.post('/api/orders', (req, res) => {
   });
 });
 
+// Tracking steps advance on their own at 0/25/50/75/100% of the four days
+// between the order and its delivery date, so old orders don't sit on "Pending".
+const STEP_FRACTIONS = [0, 0.25, 0.5, 0.75, 1];
+const STEP_ESTIMATES = ['Estimated within 24 hrs', 'Pending dispatch', 'Pending'];
+
+function stampTimeline(order) {
+  const created = Date.parse(order.createdAt);
+  if (!Array.isArray(order.timeline) || !Number.isFinite(created)) return order;
+  const span = 4 * 24 * 60 * 60 * 1000;
+  const f = Math.min(1, Math.max(0, (Date.now() - created) / span));
+  order.timeline.forEach((step, i) => {
+    const reached = f >= STEP_FRACTIONS[i];
+    step.done = reached;
+    if (reached) {
+      step.time = new Date(created + STEP_FRACTIONS[i] * span).toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short'
+      });
+    } else if (STEP_ESTIMATES[i - 1]) {
+      step.time = STEP_ESTIMATES[i - 1];
+    }
+  });
+  order.status = order.timeline.filter(s => s.done).pop().status;
+  return order;
+}
+
 // Track Order by ID
 app.get('/api/orders/:orderId', (req, res) => {
   const orders = readJson('orders.json', []);
@@ -336,7 +378,7 @@ app.get('/api/orders/:orderId', (req, res) => {
     return res.status(404).json({ error: `Order #${orderId} not found. Please check your order ID.` });
   }
 
-  res.json(order);
+  res.json(stampTimeline(order));
 });
 
 // Customer Reviews
@@ -347,9 +389,15 @@ app.get('/api/reviews/:productId', (req, res) => {
 });
 
 app.post('/api/reviews', (req, res) => {
-  const { productId, author, rating, comment } = req.body;
+  const { productId, author, rating, comment } = req.body || {};
   if (!productId || !author || !rating || !comment) {
     return res.status(400).json({ error: 'Product ID, author name, rating and comment are required.' });
+  }
+  if (!readJson('products.json', []).some(p => p.id === productId)) {
+    return res.status(404).json({ error: 'That product does not exist.' });
+  }
+  if (String(comment).length > 600) {
+    return res.status(400).json({ error: 'Please keep the review under 600 characters.' });
   }
 
   const reviewsMap = readJson('reviews.json', {});
@@ -389,7 +437,7 @@ app.post('/api/reviews', (req, res) => {
 
 // Newsletter Subscription
 app.post('/api/newsletter', (req, res) => {
-  const { email } = req.body;
+  const { email } = req.body || {};
   if (!email || !email.includes('@') || !email.includes('.')) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
   }
