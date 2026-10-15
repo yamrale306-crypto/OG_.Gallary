@@ -3,38 +3,544 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f3f0e9" />
-  <meta name="description" content="Shop OG Gallery — everyday shirts, denim and slides. Find your next favourite." />
-  <title>OG Gallery — Original finds for everyday</title>
+  <meta name="theme-color" content="#f5f2eb" />
+  <meta name="description" content="Shop OG Gallery — everyday shirts, denim and slides with 3D interactive experience. Find your next favourite." />
+  <title>OG Gallery — Originals for everyday</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Three.js (local build with CDN fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-  <div class="announcement"><span>FREE SHIPPING ON ORDERS OVER ₹2,500</span><span>GOOD FINDS. GOOD FEELING. / OG GALLERY</span></div>
-  <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="OG Gallery home"><span class="og-monogram">OG</span><span class="gallery-word">GALLERY</span></a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="#shop" data-nav="all">Shop all</a><a href="#shop" data-nav="Shirts">Shirts</a><a href="#shop" data-nav="Jeans">Denim</a><a href="#shop" data-nav="Slides_Slippers">Slides</a><a href="#reels">The feed</a>
-    </nav>
-    <div class="header-actions"><a class="instagram-link" href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer" aria-label="OG Gallery on Instagram">ig <span>↗</span></a><button class="icon-button search-toggle" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button><a class="account-link" href="#about">Our story</a><button class="cart-button" id="cartButton">Bag <span id="cartCount">0</span></button><button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button></div>
-  </header>
-  <div class="search-panel" id="searchPanel" hidden><label class="sr-only" for="searchInput">Search the OG Gallery collection</label><input id="searchInput" type="search" placeholder="Search shirts, denim, slides…"><button id="searchClose" aria-label="Close search">✕</button></div>
-  <main id="top">
-    <section class="hero" aria-label="New season collection">
-      <div class="hero-copy"><p class="eyebrow"><span class="spark">✳</span> OG GALLERY / THE EVERYDAY EDIT</p><h1>Originals<br>for <em>everyday.</em></h1><p class="hero-description">Good fits, easy slides, and everyday pieces with a little extra character. Find your next favourite.</p><a class="pill-link" href="#shop">Shop the collection <span>↗</span></a><div class="hero-index"><span>01 / 24</span><span class="index-line"></span><span>Picked for your every day</span></div></div>
-      <div class="hero-stage" id="heroStage"><div class="stage-orbit orbit-one"></div><div class="stage-orbit orbit-two"></div><div class="stage-label label-top">THE OG<br>UNIFORM <span>✳</span></div><div class="stage-label label-bottom">GOOD FINDS<br><b>OG / 26</b></div><div class="hero-photo-back"><img src="public/products/Jeans/WhatsApp Image 2026-10-15 at 10.59.19 AM.jpeg" alt="Relaxed blue denim" /></div><div class="hero-photo-main"><img src="public/products/Shirts/WhatsApp Image 2026-10-15 at 10.58.15 AM.jpeg" alt="Colorful everyday shirts" /></div><div class="floating-note"><span class="note-dot"></span><span>THE DAILY<br>EDIT</span><b>01</b></div><div class="hero-stamp">OG<br>GALLERY<br><span>✳</span></div></div>
-      <div class="hero-side-note">DESIGNED TO BE WORN<br>ON REPEAT <span>↓</span></div>
-    </section>
-    <div class="ticker" aria-label="Brand statement"><div class="ticker-track"><span>LESS, BUT BETTER</span><b>✳</b><span>MADE FOR THE LONG RUN</span><b>✳</b><span>YOUR EVERYDAY, ELEVATED</span><b>✳</b><span>LESS, BUT BETTER</span><b>✳</b><span>MADE FOR THE LONG RUN</span><b>✳</b></div></div>
-    <section class="shop-section" id="shop"><div class="section-heading"><div><p class="eyebrow">THE OG SELECTION / 24 PIECES</p><h2>Good finds<span>.</span></h2></div><p class="section-subtitle">Everyday favourites, ready to meet you.</p></div><div class="shop-tools"><div class="filters" role="group" aria-label="Filter products"><button class="filter-chip active" data-filter="all">Everything <span>24</span></button><button class="filter-chip" data-filter="Shirts">Shirts <span>05</span></button><button class="filter-chip" data-filter="Jeans">Denim <span>11</span></button><button class="filter-chip" data-filter="Slides_Slippers">Slides <span>08</span></button></div><label class="sort-label">Sort by <select id="sortSelect"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></label></div><div class="product-grid" id="productGrid"></div><button class="load-more" id="loadMore">You’re all caught up <span>✳</span></button></section>
-    <section class="reels-section" id="reels"><div class="reels-heading"><div><p class="eyebrow">A LITTLE OG ENERGY</p><h2>From the <em>feed.</em></h2></div><a class="instagram-cta" href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">Follow @og._gallery <span>↗</span></a></div><p class="reels-intro">Shop-floor moments, new arrivals and fits out in the wild. Catch the latest on Instagram.</p><div class="reels-grid"><a class="reel-card reel-tall" href="https://www.instagram.com/og._gallery/reel/DedXbU3oh1t/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 01 on Instagram"><img src="public/products/Shirts/WhatsApp Image 2026-10-15 at 10.58.57 AM.jpeg" alt="OG Gallery reel preview"><span class="reel-play">▶</span><span class="reel-tag">WATCH ON INSTAGRAM</span><span class="reel-number">01</span></a><a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeVx41Po8iY/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 02 on Instagram"><img src="public/products/Jeans/WhatsApp Image 2026-10-15 at 11.06.22 AM (1).jpeg" alt="OG Gallery reel preview"><span class="reel-play">▶</span><span class="reel-tag">WATCH ON INSTAGRAM</span><span class="reel-number">02</span></a><a class="reel-card reel-tall" href="https://www.instagram.com/og._gallery/reel/DeTCmWTINgs/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 03 on Instagram"><img src="public/products/Slides_Slippers/WhatsApp Image 2026-10-15 at 10.59.14 AM.jpeg" alt="OG Gallery reel preview"><span class="reel-play">▶</span><span class="reel-tag">WATCH ON INSTAGRAM</span><span class="reel-number">03</span></a><a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeM9ujWIUYF/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 04 on Instagram"><img src="public/products/Jeans/WhatsApp Image 2026-10-15 at 10.59.20 AM.jpeg" alt="OG Gallery reel preview"><span class="reel-play">▶</span><span class="reel-tag">WATCH ON INSTAGRAM</span><span class="reel-number">04</span></a></div></section>
-    <section class="manifesto" id="about"><div class="manifesto-image"><img src="public/products/Jeans/WhatsApp Image 2026-10-15 at 11.06.22 AM (1).jpeg" alt="Denim picked at OG Gallery"/><span class="image-caption">GOOD FINDS. GOOD FEELING. — OG GALLERY</span></div><div class="manifesto-copy"><p class="eyebrow">A NOTE FROM OG GALLERY</p><h2>Find your<br><em>own thing.</em></h2><p>We bring together the pieces you reach for on repeat — easy fits, everyday comfort and little details that make them feel like yours.</p><a href="#shop" class="text-link">Explore the collection <span>↗</span></a><div class="manifesto-doodle">✳</div></div></section>
-    <section class="newsletter"><div><p class="eyebrow">A LITTLE SOMETHING IN YOUR INBOX</p><h2>Good things, <em>occasionally.</em></h2></div><form id="newsletterForm"><label for="emailInput" class="sr-only">Your email address</label><input id="emailInput" type="email" placeholder="Your email address" required><button type="submit">Count me in <span>↗</span></button></form><small id="newsletterMessage">No noise. Just good things.</small></section>
-  </main>
-  <footer class="site-footer"><a class="wordmark" href="#top"><span class="og-monogram">OG</span><span class="gallery-word">GALLERY</span></a><a class="footer-instagram" href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">INSTAGRAM / @OG._GALLERY ↗</a><span>SUBHADRA MALL 06 / BARAMATI</span><span>© OG GALLERY 2026</span><a href="#top">BACK TO TOP ↑</a></footer>
+  <!-- 3D Scroll WebGL Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- 3D Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+
+  <!-- 3D Depth HUD Indicator -->
+  <div class="depth-indicator">
+    <span id="scrollDepthIndicator">00%</span>
+    <span>✳</span>
+    <span>3D EDITORIAL</span>
+  </div>
+
+  <!-- Audio / Sound Effects Toggle -->
+  <button class="sound-toggle-fixed" id="soundToggleBtn" aria-label="Toggle tactile sound effects">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+    <span>Audio Off</span>
+  </button>
+
+  <div class="content-wrapper">
+    <!-- Announcement Bar -->
+    <div class="announcement">
+      <div>
+        <span>FREE SHIPPING ON ORDERS OVER ₹2,500</span>
+        <a href="#track" class="track-link track-order-trigger">Track Order ↗</a>
+      </div>
+      <span>GOOD FINDS. GOOD FEELING. / OG GALLERY BARAMATI</span>
+    </div>
+
+    <!-- Site Header -->
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="OG Gallery Home">
+        <span class="og-monogram">OG</span>
+        <span class="gallery-word">GALLERY</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#shop" data-nav="all" class="selected">Shop all</a>
+        <a href="#shop" data-nav="Shirts">Shirts</a>
+        <a href="#shop" data-nav="Jeans">Denim</a>
+        <a href="#shop" data-nav="Slides_Slippers">Slides</a>
+        <a href="#reels">The feed</a>
+        <a href="#about">Our story</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Quick Search -->
+        <button class="icon-action-btn search-toggle" aria-label="Search Catalog" title="Search (Press /)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+
+        <!-- Wishlist -->
+        <button class="icon-action-btn" id="wishlistButton" aria-label="Saved Wishlist" title="Saved Wishlist">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <span class="icon-badge" id="wishlistCount" style="display: none;">0</span>
+        </button>
+
+        <!-- Bag / Cart -->
+        <button class="cart-header-btn" id="cartButton" aria-label="Shopping Bag">
+          <span>Bag</span>
+          <span class="bag-pill" id="cartCount">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="icon-action-btn menu-toggle" id="menuToggle" aria-label="Open mobile menu">☰</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="top">
+      <!-- 3D Hero Section -->
+      <section class="hero" aria-label="OG Gallery Collection Showcase">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="spark">✳</span> OG GALLERY / THE EVERYDAY EDIT</p>
+          <h1>Originals<br>for <em>everyday.</em></h1>
+          <p class="hero-description">
+            High-grade slub cottons, authentic structured denim, and cloud-soft recovery slides. Thoughtfully crafted pieces with quiet confidence.
+          </p>
+          
+          <div class="hero-cta-group">
+            <a class="pill-btn" href="#shop">
+              <span>Shop the collection</span>
+              <span>↗</span>
+            </a>
+            <a class="pill-btn-outline" href="#about">
+              <span>Our Philosophy</span>
+            </a>
+          </div>
+
+          <div class="hero-badges">
+            <span><b>24</b> Curated Pieces</span>
+            <span>•</span>
+            <span><b>100%</b> Natural Blends</span>
+            <span>•</span>
+            <span>Express Shipping</span>
+          </div>
+        </div>
+
+        <!-- Layered 3D Stage -->
+        <div class="hero-stage" id="heroStage">
+          <div class="hero-photo-back">
+            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.19%20AM.jpeg" alt="Relaxed Blue Denim" />
+          </div>
+          <div class="hero-photo-main">
+            <img src="public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.15%20AM.jpeg" alt="Colorful Everyday Shirts" />
+          </div>
+          <div class="floating-badge">
+            <span>OG GALLERY</span>
+            <b>AW / 26</b>
+            <span>AUTHENTIC</span>
+          </div>
+          <div class="hero-stamp">
+            OG<br>GALLERY<br>
+            <span>✳ BARAMATI</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Infinite Marquee Ticker -->
+      <div class="ticker" aria-label="Brand statement">
+        <div class="ticker-track">
+          <span>LESS, BUT BETTER</span>
+          <b>✳</b>
+          <span>MADE FOR THE LONG RUN</span>
+          <b>✳</b>
+          <span>YOUR EVERYDAY, ELEVATED</span>
+          <b>✳</b>
+          <span>BARAMATI STUDIO 06</span>
+          <b>✳</b>
+          <span>HONEST MATERIALS & CRAFTSMANSHIP</span>
+          <b>✳</b>
+          <span>LESS, BUT BETTER</span>
+          <b>✳</b>
+          <span>MADE FOR THE LONG RUN</span>
+          <b>✳</b>
+          <span>YOUR EVERYDAY, ELEVATED</span>
+          <b>✳</b>
+        </div>
+      </div>
+
+      <!-- Shop Section with 3D Card Tilts -->
+      <section class="shop-section" id="shop">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow" id="productCount">THE OG SELECTION / 24 PIECES</p>
+            <h2>Good finds<span>.</span></h2>
+            <p class="section-subtitle">Everyday favourites, ready to meet you. Interactive 3D cards tilt on hover.</p>
+          </div>
+        </div>
+
+        <!-- Controls: Filters, View Mode, Sort -->
+        <div class="shop-controls">
+          <div class="filters-group" role="group" aria-label="Filter products">
+            <button class="filter-chip active" data-filter="all">Everything</button>
+            <button class="filter-chip" data-filter="Shirts">Shirts</button>
+            <button class="filter-chip" data-filter="Jeans">Denim</button>
+            <button class="filter-chip" data-filter="Slides_Slippers">Slides</button>
+          </div>
+
+          <div class="controls-right">
+            <!-- View switch: 4 columns or 2 columns -->
+            <div class="view-switch">
+              <button class="view-btn active" id="viewGridBtn" title="4-Column Grid">Grid</button>
+              <button class="view-btn" id="viewFocusBtn" title="2-Column Detailed View">Focus</button>
+            </div>
+
+            <!-- Sort dropdown -->
+            <div class="sort-wrap">
+              <label for="sortSelect">Sort:</label>
+              <select id="sortSelect">
+                <option value="featured">Featured</option>
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+                <option value="new">Newest First</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Grid Container -->
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+
+      <!-- Editorial Reels Feed Section -->
+      <section class="reels-section" id="reels">
+        <div class="reels-heading">
+          <div>
+            <p class="eyebrow">A LITTLE OG ENERGY</p>
+            <h2>From the <em>feed.</em></h2>
+          </div>
+          <a class="pill-btn-outline" href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">
+            <span>Follow @og._gallery</span>
+            <span>↗</span>
+          </a>
+        </div>
+        <p class="reels-intro">
+          Shop-floor moments, new arrivals, and fits out in the wild. Catch our latest drop highlights.
+        </p>
+        <div class="reels-grid">
+          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DedXbU3oh1t/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 01">
+            <img src="public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg" alt="OG Gallery Shirt Reel" />
+            <span class="reel-play">▶</span>
+            <span class="reel-tag">WATCH REEL</span>
+            <span class="reel-number">01</span>
+          </a>
+          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeVx41Po8iY/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 02">
+            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(1).jpeg" alt="OG Gallery Denim Reel" />
+            <span class="reel-play">▶</span>
+            <span class="reel-tag">WATCH REEL</span>
+            <span class="reel-number">02</span>
+          </a>
+          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeTCmWTINgs/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 03">
+            <img src="public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.14%20AM.jpeg" alt="OG Gallery Slides Reel" />
+            <span class="reel-play">▶</span>
+            <span class="reel-tag">WATCH REEL</span>
+            <span class="reel-number">03</span>
+          </a>
+          <a class="reel-card" href="https://www.instagram.com/og._gallery/reel/DeM9ujWIUYF/" target="_blank" rel="noreferrer" aria-label="Watch OG Gallery reel 04">
+            <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.20%20AM.jpeg" alt="OG Gallery Streetwear Reel" />
+            <span class="reel-play">▶</span>
+            <span class="reel-tag">WATCH REEL</span>
+            <span class="reel-number">04</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Brand Story & Manifesto -->
+      <section class="manifesto" id="about">
+        <div class="manifesto-image">
+          <img src="public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(1).jpeg" alt="Denim picked at OG Gallery" />
+          <span class="image-caption">GOOD FINDS. GOOD FEELING. — OG GALLERY</span>
+        </div>
+        <div class="manifesto-copy">
+          <p class="eyebrow">A NOTE FROM OG GALLERY</p>
+          <h2>Find your<br><em>own thing.</em></h2>
+          <p>
+            We curate the pieces you reach for on repeat — easy silhouettes, honest weights, and small details that make everyday garments feel truly personal. Rooted in Baramati, made for your daily flow.
+          </p>
+          <a href="#shop" class="text-link">
+            <span>Explore the current collection</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Newsletter with Backend Integration -->
+      <section class="newsletter">
+        <div>
+          <p class="eyebrow">A LITTLE SOMETHING IN YOUR INBOX</p>
+          <h2>Good things, <em>occasionally.</em></h2>
+        </div>
+        <div>
+          <form id="newsletterForm">
+            <label for="emailInput" class="sr-only">Your email address</label>
+            <input id="emailInput" type="email" placeholder="Enter your email for 10% off" required />
+            <button type="submit">Count me in <span>↗</span></button>
+          </form>
+          <small id="newsletterMessage">No spam. Just arrivals & invites. Welcome code: OGFIRST10.</small>
+        </div>
+      </section>
+    </main>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+      <a class="wordmark" href="#top">
+        <span class="og-monogram">OG</span>
+        <span class="gallery-word">GALLERY</span>
+      </a>
+      <a href="https://www.instagram.com/og._gallery/" target="_blank" rel="noreferrer">
+        INSTAGRAM / @OG._GALLERY ↗
+      </a>
+      <a href="#track" class="track-order-trigger">
+        TRACK AN ORDER ↗
+      </a>
+      <span>SUBHADRA MALL 06 / BARAMATI, MH</span>
+      <span>© OG GALLERY 2026</span>
+      <a href="#top">BACK TO TOP ↑</a>
+    </footer>
+  </div>
+
+  <!-- ==================== DRAWERS & MODALS ==================== -->
+
+  <!-- Drawer Overlay Backdrop -->
+  <div class="drawer-overlay" id="cartOverlay"></div>
+
+  <!-- Slide-out Bag (Cart) Drawer -->
+  <aside class="slide-drawer" id="cartDrawer" aria-label="Shopping Bag">
+    <div class="drawer-header">
+      <h3>Your Bag (<span id="cartCountDrawer">0</span>)</h3>
+      <button class="drawer-close" id="closeCartBtn" aria-label="Close Bag">✕</button>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="shipping-progress-wrap">
+      <p class="shipping-text" id="shippingProgressText">Add ₹2,500 for Free Shipping</p>
+      <div class="shipping-bar-bg">
+        <div class="shipping-bar-fill" id="shippingProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="drawer-body" id="cartItemsList"></div>
+
+    <!-- Coupon Code Input -->
+    <div class="promo-box">
+      <div class="promo-input-row">
+        <input type="text" id="promoInput" placeholder="Promo code (e.g. OGFIRST10, OG200)" />
+        <button class="pill-btn-small" id="applyPromoBtn">Apply</button>
+      </div>
+      <div class="promo-tag" id="appliedPromoTag"></div>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">₹0</span>
+      </div>
+      <div class="summary-row" style="display: none;">
+        <span>Discount</span>
+        <span id="cartDiscount">-₹0</span>
+      </div>
+      <div class="summary-row">
+        <span>Estimated Delivery</span>
+        <span id="cartShipping">₹0</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="checkout-btn" id="proceedCheckoutBtn">
+        <span>Proceed to Checkout</span>
+        <span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Wishlist Drawer -->
+  <aside class="slide-drawer" id="wishlistDrawer" aria-label="Saved Pieces">
+    <div class="drawer-header">
+      <h3>Saved Pieces</h3>
+      <button class="drawer-close" id="closeWishlistBtn" aria-label="Close Wishlist">✕</button>
+    </div>
+    <div class="drawer-body" id="wishlistItemsList"></div>
+  </aside>
+
+  <!-- Quick View / Product Detail Modal -->
+  <div class="modal-overlay" id="quickViewModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeQuickViewBtn" aria-label="Close modal">✕</button>
+      <div id="quickViewContent"></div>
+    </div>
+  </div>
+
+  <!-- Complete Checkout Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-card checkout-modal-card">
+      <button class="modal-close-btn" id="closeCheckoutBtn" aria-label="Close checkout">✕</button>
+      <form id="checkoutForm">
+        <div class="checkout-grid">
+          <div class="checkout-form-col">
+            <h3>Shipping & Contact</h3>
+            <div class="form-group">
+              <label for="checkoutName">Full Name</label>
+              <input type="text" id="checkoutName" placeholder="Deva Kale" required />
+            </div>
+            <div class="form-two-col">
+              <div class="form-group">
+                <label for="checkoutEmail">Email Address</label>
+                <input type="email" id="checkoutEmail" placeholder="you@example.com" required />
+              </div>
+              <div class="form-group">
+                <label for="checkoutPhone">Phone Number</label>
+                <input type="tel" id="checkoutPhone" placeholder="+91 98765 43210" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="checkoutAddress">Street Address / Apartment</label>
+              <input type="text" id="checkoutAddress" placeholder="Flat 402, Royal Palms, MG Road" required />
+            </div>
+            <div class="form-two-col">
+              <div class="form-group">
+                <label for="checkoutCity">City</label>
+                <input type="text" id="checkoutCity" value="Baramati" required />
+              </div>
+              <div class="form-group">
+                <label for="checkoutState">State</label>
+                <input type="text" id="checkoutState" value="Maharashtra" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="checkoutPincode">PIN Code</label>
+              <input type="text" id="checkoutPincode" placeholder="413102" required />
+            </div>
+
+            <h3 style="margin-top: 24px;">Payment Method</h3>
+            <div class="payment-options">
+              <label class="payment-radio">
+                <input type="radio" name="paymentMethod" value="UPI / QR Code" checked />
+                <span>UPI / QR Code (Google Pay, PhonePe, Paytm)</span>
+              </label>
+              <label class="payment-radio">
+                <input type="radio" name="paymentMethod" value="Cash on Delivery" />
+                <span>Cash on Delivery (Pay upon delivery)</span>
+              </label>
+              <label class="payment-radio">
+                <input type="radio" name="paymentMethod" value="Card Payment" />
+                <span>Credit / Debit Card (Visa, Mastercard, RuPay)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="checkout-summary-col">
+            <h3>Order Summary</h3>
+            <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="checkoutSummarySubtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Discount</span>
+              <span id="checkoutSummaryDiscount">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span id="checkoutSummaryShipping">FREE</span>
+            </div>
+            <div class="summary-row total-row">
+              <span>Grand Total</span>
+              <span id="checkoutSummaryTotal">₹0</span>
+            </div>
+            <button type="submit" class="checkout-btn" id="placeOrderBtn" style="margin-top: 24px;">
+              <span>Confirm & Place Order</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Modal -->
+  <div class="modal-overlay" id="orderConfirmModal">
+    <div class="modal-card confirm-card">
+      <div class="confirm-check-icon">✓</div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you, <b id="confirmCustomerName">Friend</b>. We're getting your pieces ready for packing.</p>
+      
+      <div class="confirm-order-id-badge">
+        ORDER ID: <span id="confirmOrderId">OG-00000</span>
+      </div>
+
+      <div class="confirm-details-box">
+        <div class="confirm-details-row">
+          <span>Delivery Address:</span>
+          <b id="confirmAddress">Baramati, MH</b>
+        </div>
+        <div class="confirm-details-row">
+          <span>Payment Mode:</span>
+          <b id="confirmPayment">UPI</b>
+        </div>
+        <div class="confirm-details-row">
+          <span>Estimated Delivery:</span>
+          <b id="confirmDeliveryDate">In 3-4 days</b>
+        </div>
+        <div class="confirm-details-row" style="margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 8px;">
+          <span>Total Paid:</span>
+          <b id="confirmTotal">₹0</b>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button class="pill-btn" id="trackNewOrderBtn">
+          <span>Track Order Status</span>
+          <span>↗</span>
+        </button>
+        <button class="pill-btn-outline" id="closeConfirmBtn">
+          <span>Continue Shopping</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Track Order Modal -->
+  <div class="modal-overlay" id="trackOrderModal">
+    <div class="modal-card track-card">
+      <button class="modal-close-btn" id="closeTrackBtn" aria-label="Close track order">✕</button>
+      <p class="eyebrow">OG GALLERY FULFILLMENT</p>
+      <h2>Track Your Order</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-top: 6px;">Enter your OG Order ID (e.g. OG-78419) to view real-time transit status.</p>
+      
+      <form class="track-form" id="trackOrderForm">
+        <input type="text" id="trackOrderInput" placeholder="Enter Order ID (e.g. OG-78419)" required />
+        <button type="submit" class="pill-btn">
+          <span>Search</span>
+        </button>
+      </form>
+
+      <div id="trackOrderStatus">
+        <p style="font-size: 11px; color: var(--muted); text-align: center; padding: 20px 0;">
+          Tip: Try entering sample order ID <b>OG-78419</b> to preview live status tracking.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instant Search Overlay -->
+  <div class="modal-overlay" id="searchOverlay">
+    <div class="modal-card search-overlay-card">
+      <button class="modal-close-btn" id="closeSearchBtn" aria-label="Close search">✕</button>
+      <p class="eyebrow">SEARCH THE OG EDIT</p>
+      <div class="search-input-wrap">
+        <input type="text" id="searchInput" placeholder="Search shirts, denim, slides, fabrics…" autocomplete="off" />
+      </div>
+      <div id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Notification -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="app.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="public/js/sound.js"></script>
+  <script src="public/js/api.js"></script>
+  <script src="public/js/three-scene.js"></script>
+  <script src="public/js/app.js"></script>
 </body>
 </html>

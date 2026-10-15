@@ -1,0 +1,144 @@
+[
+  {
+    "orderId": "OG-37655",
+    "createdAt": "2026-10-15T15:19:39.326Z",
+    "customer": {
+      "name": "Test User",
+      "email": "test@example.com",
+      "phone": "9876543210"
+    },
+    "shipping": {
+      "address": "123 Test St",
+      "city": "Baramati",
+      "state": "Maharashtra",
+      "pincode": "413102"
+    },
+    "items": [
+      {
+        "id": "Shirts-0",
+        "name": "The Everyday Shirt",
+        "price": 1290,
+        "size": "L",
+        "quantity": 1,
+        "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg"
+      }
+    ],
+    "pricing": {
+      "subtotal": 1290,
+      "discount": 129,
+      "promoCode": "OGFIRST10",
+      "shipping": 150,
+      "total": 1311
+    },
+    "paymentMethod": "UPI / QR",
+    "status": "Order Placed",
+    "estimatedDelivery": "2026-10-19",
+    "timeline": [
+      {
+        "status": "Order Placed",
+        "time": "15 Oct 2026, 8:49 pm",
+        "detail": "Order received and confirmed",
+        "done": true
+      },
+      {
+        "status": "Quality Check & Packing",
+        "time": "Estimated within 24 hrs",
+        "detail": "Inspected at Baramati fulfillment studio",
+        "done": false
+      },
+      {
+        "status": "In Transit",
+        "time": "Pending dispatch",
+        "detail": "Handed over to express courier",
+        "done": false
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "Pending",
+        "detail": "Delivery agent assigned",
+        "done": false
+      },
+      {
+        "status": "Delivered",
+        "time": "Expected by 19 Oct",
+        "detail": "Delivered to your doorstep",
+        "done": false
+      }
+    ]
+  },
+  {
+    "orderId": "OG-78419",
+    "createdAt": "2026-10-14T10:30:00.000Z",
+    "customer": {
+      "name": "Deva K.",
+      "email": "deva@example.com",
+      "phone": "+91 98765 43210"
+    },
+    "shipping": {
+      "address": "Flat 402, Royal Palms, MG Road",
+      "city": "Baramati",
+      "state": "Maharashtra",
+      "pincode": "413102"
+    },
+    "items": [
+      {
+        "id": "Jeans-0",
+        "name": "The Weekender Jean",
+        "price": 2190,
+        "size": "32",
+        "quantity": 1,
+        "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.12%20AM.jpeg"
+      },
+      {
+        "id": "Shirts-0",
+        "name": "The Everyday Shirt",
+        "price": 1290,
+        "size": "L",
+        "quantity": 1,
+        "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg"
+      }
+    ],
+    "pricing": {
+      "subtotal": 3480,
+      "discount": 348,
+      "promoCode": "OGFIRST10",
+      "shipping": 0,
+      "total": 3132
+    },
+    "paymentMethod": "UPI / QR",
+    "status": "In Transit",
+    "estimatedDelivery": "2026-10-18",
+    "timeline": [
+      {
+        "status": "Order Placed",
+        "time": "2026-10-14 10:30 AM",
+        "detail": "Order confirmed and payment verified",
+        "done": true
+      },
+      {
+        "status": "Quality Check & Packed",
+        "time": "2026-10-14 04:15 PM",
+        "detail": "Inspected at Baramati fulfillment hub",
+        "done": true
+      },
+      {
+        "status": "In Transit",
+        "time": "2026-10-15 09:00 AM",
+        "detail": "Departed sorting facility with express courier",
+        "done": true
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "Pending",
+        "detail": "Delivery executive will contact upon arrival",
+        "done": false
+      },
+      {
+        "status": "Delivered",
+        "time": "Pending",
+        "detail": "Delivered to recipient",
+        "done": false
+      }
+    ]
+  }
+]

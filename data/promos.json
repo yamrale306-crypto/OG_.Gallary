@@ -1,0 +1,23 @@
+{
+  "OGFIRST10": {
+    "code": "OGFIRST10",
+    "type": "percentage",
+    "value": 10,
+    "description": "10% off your first order",
+    "minOrder": 0
+  },
+  "OG200": {
+    "code": "OG200",
+    "type": "fixed",
+    "value": 200,
+    "description": "₹200 flat discount on orders over ₹2,000",
+    "minOrder": 2000
+  },
+  "FREESHIP": {
+    "code": "FREESHIP",
+    "type": "free_shipping",
+    "value": 0,
+    "description": "Free standard shipping on all orders",
+    "minOrder": 0
+  }
+}

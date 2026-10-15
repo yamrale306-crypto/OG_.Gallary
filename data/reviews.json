@@ -1,0 +1,48 @@
+{
+  "Shirts-0": [
+    {
+      "id": "rev-1",
+      "author": "Arjun M.",
+      "rating": 5,
+      "date": "2026-10-12",
+      "comment": "The cut on this Everyday Shirt is immaculate. Super comfortable cotton that holds its shape even after washing. Definitely ordering another.",
+      "verified": true
+    },
+    {
+      "id": "rev-2",
+      "author": "Karan V.",
+      "rating": 5,
+      "date": "2026-10-08",
+      "comment": "Perfect drop shoulder fit! Looks amazing both buttoned up or open over a plain white tee.",
+      "verified": true
+    }
+  ],
+  "Jeans-0": [
+    {
+      "id": "rev-3",
+      "author": "Devansh K.",
+      "rating": 5,
+      "date": "2026-10-10",
+      "comment": "Best pair of jeans I've bought this year. The 13.5oz denim weight is substantial and authentic without feeling stiff. 10/10.",
+      "verified": true
+    },
+    {
+      "id": "rev-4",
+      "author": "Rohan S.",
+      "rating": 5,
+      "date": "2026-10-05",
+      "comment": "Great rise and clean taper around sneakers. Real Baramati quality!",
+      "verified": true
+    }
+  ],
+  "Slides_Slippers-1": [
+    {
+      "id": "rev-5",
+      "author": "Aakash T.",
+      "rating": 5,
+      "date": "2026-10-14",
+      "comment": "Actually feels like walking on clouds. Thick sole provides insane shock absorption. Worth every rupee.",
+      "verified": true
+    }
+  ]
+}

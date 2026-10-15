@@ -1,0 +1,633 @@
+[
+  {
+    "id": "Shirts-0",
+    "category": "Shirts",
+    "name": "The Everyday Shirt",
+    "price": 1290,
+    "originalPrice": 1690,
+    "badge": "New",
+    "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg",
+    "description": "Crafted from breathable premium slub cotton with a relaxed contemporary drop-shoulder cut. Features French seams, mother-of-pearl style buttons, and a clean structured collar.",
+    "material": "100% Long-staple Combed Cotton (160 GSM)",
+    "care": "Machine wash cold with like colors. Hang dry or tumble dry low. Warm iron if needed.",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "stock": 13,
+    "rating": 4.9,
+    "reviewCount": 28,
+    "features": [
+      "Pre-shrunk fabric",
+      "Reinforced collar stand",
+      "Natural coconut shell button accents"
+    ]
+  },
+  {
+    "id": "Shirts-1",
+    "category": "Shirts",
+    "name": "Soft Cotton Poplin",
+    "price": 1490,
+    "originalPrice": 1890,
+    "badge": "Bestseller",
+    "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.59.04%20AM.jpeg",
+    "description": "Crisp yet feather-light poplin tailored for effortlessly sharp day-to-night transitions. Enzyme washed for an ultra-soft broken-in feel straight out of the box.",
+    "material": "100% Fine Mercerized Cotton Poplin",
+    "care": "Gentle cycle 30°C. Do not bleach. Cool iron.",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "stock": 9,
+    "rating": 4.8,
+    "reviewCount": 42,
+    "features": [
+      "Air-light breathability",
+      "Wrinkle-resistant weave",
+      "Back box pleat for mobility"
+    ]
+  },
+  {
+    "id": "Shirts-2",
+    "category": "Shirts",
+    "name": "After Hours Shirt",
+    "price": 1690,
+    "originalPrice": 2190,
+    "badge": "Limited",
+    "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.12%20AM.jpeg",
+    "description": "An architectural evening silhouette cut from fluid cotton-modal twill. Drapes with understated elegance, featuring a camp collar and deep charcoal tones.",
+    "material": "65% Cotton, 35% Botanical Modal",
+    "care": "Hand wash or gentle machine wash inside-out. Line dry in shade.",
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "stock": 5,
+    "rating": 5,
+    "reviewCount": 19,
+    "features": [
+      "Silk-touch fluid drape",
+      "Cuban-style notch lapel",
+      "Chest flap pocket"
+    ]
+  },
+  {
+    "id": "Shirts-3",
+    "category": "Shirts",
+    "name": "Colour Study Shirt",
+    "price": 1290,
+    "originalPrice": 1590,
+    "badge": "",
+    "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.59.02%20AM.jpeg",
+    "description": "Subtle artisanal botanical dye treatment creates rich depth of color that develops individual patina with wear. Minimalist pocketless profile.",
+    "material": "100% Organic Raw Cotton",
+    "care": "Wash separately for first 2 washes. Mild detergent only.",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "stock": 18,
+    "rating": 4.7,
+    "reviewCount": 15,
+    "features": [
+      "Earth-mineral garment dye",
+      "Seamless front placket",
+      "Pre-washed for zero shrinkage"
+    ]
+  },
+  {
+    "id": "Shirts-4",
+    "category": "Shirts",
+    "name": "Easy Day Shirt",
+    "price": 1490,
+    "originalPrice": 1790,
+    "badge": "New",
+    "image": "public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.15%20AM.jpeg",
+    "description": "Your go-to everyday companion. Cut with a slightly boxy torso and straight hem that looks equally natural untucked over denim or unbuttoned over a white tee.",
+    "material": "100% Textured Oxford Weave Cotton",
+    "care": "Normal wash cycle. Tumble dry medium. Iron medium heat.",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "stock": 12,
+    "rating": 4.8,
+    "reviewCount": 24,
+    "features": [
+      "All-day comfort stretch",
+      "Curved bottom hem",
+      "Dual pen pocket"
+    ]
+  },
+  {
+    "id": "Jeans-0",
+    "category": "Jeans",
+    "name": "The Weekender Jean",
+    "price": 2190,
+    "originalPrice": 2790,
+    "badge": "Bestseller",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.12%20AM.jpeg",
+    "description": "13.5oz ring-spun denim tailored with a vintage medium rise and gently tapered leg. Authentic washed look achieved through sustainable ozone processing.",
+    "material": "99% Cotton, 1% Comfort Elastane (13.5 oz)",
+    "care": "Wash inside-out in cold water. Air dry to maintain fabric elasticity.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 16,
+    "rating": 4.9,
+    "reviewCount": 63,
+    "features": [
+      "YKK antique copper zipper",
+      "Reinforced bar-tack pockets",
+      "Genuine suede back patch"
+    ]
+  },
+  {
+    "id": "Jeans-1",
+    "category": "Jeans",
+    "name": "Straight Up Denim",
+    "price": 2290,
+    "originalPrice": 2890,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.16%20AM.jpeg",
+    "description": "The quintessential heritage straight cut. Clean lines from thigh to ankle, structured heavy-weight drape that holds its architecture throughout the day.",
+    "material": "100% Rigid Raw Indigo Denim (14 oz)",
+    "care": "Cold soak or wash inside out. Hang dry only.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 11,
+    "rating": 4.7,
+    "reviewCount": 31,
+    "features": [
+      "Classic 5-pocket construction",
+      "Custom OG engraved hardware",
+      "Selvedge-inspired inside seam"
+    ]
+  },
+  {
+    "id": "Jeans-2",
+    "category": "Jeans",
+    "name": "Everyday Straight Jean",
+    "price": 2290,
+    "originalPrice": 2990,
+    "badge": "New",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.18%20AM.jpeg",
+    "description": "Engineered for pure versatility. A relaxed mid-rise straight silhouette in an authentic stonewash blue that pairs effortlessly with boots, sneakers or slides.",
+    "material": "98% Cotton, 2% Poly-Spandex Core (13 oz)",
+    "care": "Machine wash cold. Do not dry clean.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 8,
+    "rating": 4.9,
+    "reviewCount": 17,
+    "features": [
+      "360-degree flex recovery",
+      "Deep front pockets",
+      "Anti-sag waistband"
+    ]
+  },
+  {
+    "id": "Jeans-3",
+    "category": "Jeans",
+    "name": "Blue Hour Denim",
+    "price": 2190,
+    "originalPrice": 2690,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.19%20AM.jpeg",
+    "description": "Deep twilight indigo wash with hand-applied fading across the thighs and whiskers. Cut with a contemporary regular fit for total ease of movement.",
+    "material": "99% Cotton, 1% Spandex",
+    "care": "Cold wash, hang dry in shade.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 14,
+    "rating": 4.8,
+    "reviewCount": 22,
+    "features": [
+      "Hand-sanded wear patterns",
+      "Chain-stitched hem",
+      "Double-needle back yoke"
+    ]
+  },
+  {
+    "id": "Jeans-4",
+    "category": "Jeans",
+    "name": "The Off-Duty Jean",
+    "price": 2390,
+    "originalPrice": 3190,
+    "badge": "Limited",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2010.59.20%20AM.jpeg",
+    "description": "A relaxed skater-inspired silhouette with subtle stacking at the ankle. Heavy stonewashed for maximum drape and buttery soft touch.",
+    "material": "100% Premium Cotton Denim (13.8 oz)",
+    "care": "Wash inside out with dark colors. Line dry.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 4,
+    "rating": 5,
+    "reviewCount": 38,
+    "features": [
+      "Relaxed loose silhouette",
+      "Drop crotch ease",
+      "Reinforced pocket bags"
+    ]
+  },
+  {
+    "id": "Jeans-5",
+    "category": "Jeans",
+    "name": "Classic Blue Jean",
+    "price": 2290,
+    "originalPrice": 2890,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM.jpeg",
+    "description": "Timeless true blue denim featuring subtle whiskering and a tailored slim-straight cut that elongates the leg without feeling tight.",
+    "material": "99% Cotton, 1% Lycra (13.2 oz)",
+    "care": "Machine wash cold, air dry.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 19,
+    "rating": 4.6,
+    "reviewCount": 29,
+    "features": [
+      "Comfort stretch waistband",
+      "Brass rivets",
+      "Zero water-waste wash method"
+    ]
+  },
+  {
+    "id": "Jeans-6",
+    "category": "Jeans",
+    "name": "The Relaxed Fit",
+    "price": 2390,
+    "originalPrice": 2990,
+    "badge": "Bestseller",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(1).jpeg",
+    "description": "Our most popular denim silhouette. Roomy in the seat and thigh with a graceful parallel fall to the sneakers. Modern, comfortable, effortless.",
+    "material": "100% Sustainable Cotton Denim (13.5 oz)",
+    "care": "Machine wash cold. Tumble dry gentle.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 7,
+    "rating": 4.9,
+    "reviewCount": 77,
+    "features": [
+      "Easy relaxed profile",
+      "Heavy duty belt loops",
+      "Embossed metal button shank"
+    ]
+  },
+  {
+    "id": "Jeans-7",
+    "category": "Jeans",
+    "name": "Stonewash Straight",
+    "price": 2190,
+    "originalPrice": 2790,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.22%20AM%20(2).jpeg",
+    "description": "Vintage 90s aesthetic revived. Authentic marble wash effect with soft brushed interior for luxurious all-day comfort.",
+    "material": "100% Combed Denim (13 oz)",
+    "care": "Cool wash inside out. Tumble low.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 13,
+    "rating": 4.8,
+    "reviewCount": 21,
+    "features": [
+      "Marble wash texture",
+      "Vintage brass zip",
+      "Bar-tacked stress points"
+    ]
+  },
+  {
+    "id": "Jeans-8",
+    "category": "Jeans",
+    "name": "Easy Fit Denim",
+    "price": 2290,
+    "originalPrice": 2890,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.23%20AM.jpeg",
+    "description": "Engineered for weekend lounging and city commutes. Generous cut with just enough structure to keep you looking sharp effortlessly.",
+    "material": "98% Cotton, 2% Spandex",
+    "care": "Machine wash cold with mild detergent.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 10,
+    "rating": 4.7,
+    "reviewCount": 18,
+    "features": [
+      "Ergonomic knee darts",
+      "Soft-touch interior",
+      "Grown-on waistband"
+    ]
+  },
+  {
+    "id": "Jeans-9",
+    "category": "Jeans",
+    "name": "The Everyday Jean",
+    "price": 2190,
+    "originalPrice": 2790,
+    "badge": "New",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.23%20AM%20(1).jpeg",
+    "description": "The foundation of any good wardrobe. Medium wash denim with clean contrasting gold stitching and standard 32-inch inseam.",
+    "material": "100% Organic Cotton (13 oz)",
+    "care": "Wash inside out cold. Dry flat.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 15,
+    "rating": 4.8,
+    "reviewCount": 35,
+    "features": [
+      "Eco-responsible indigo",
+      "Contrast topstitching",
+      "Deep front pockets"
+    ]
+  },
+  {
+    "id": "Jeans-10",
+    "category": "Jeans",
+    "name": "Weekend Blue Jean",
+    "price": 2290,
+    "originalPrice": 2890,
+    "badge": "",
+    "image": "public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.24%20AM.jpeg",
+    "description": "Lighter wash with high-contrast character and soft hand feel. Ideal for warm afternoons and paired with slides or crisp white shirts.",
+    "material": "99% Cotton, 1% Stretch Elastane",
+    "care": "Machine wash cold. Do not bleach.",
+    "sizes": [
+      "30",
+      "32",
+      "34",
+      "36"
+    ],
+    "stock": 9,
+    "rating": 4.6,
+    "reviewCount": 14,
+    "features": [
+      "Pre-softened fabric",
+      "Nickel-free hardware",
+      "Reinforced back pockets"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-0",
+    "category": "Slides_Slippers",
+    "name": "Poolside Slide",
+    "price": 690,
+    "originalPrice": 990,
+    "badge": "New",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.02%20AM%20(1).jpeg",
+    "description": "Molded one-piece lightweight EVA foam slide. Ergonomic footbed with textured arch support and slip-resistant tread pattern.",
+    "material": "100% Waterproof Dual-density EVA",
+    "care": "Wipe clean with a damp cloth and mild soap. Avoid extreme direct sun heat.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 25,
+    "rating": 4.8,
+    "reviewCount": 44,
+    "features": [
+      "Waterproof & buoyant",
+      "Cupped heel cradle",
+      "Anti-slip tread grooves"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-1",
+    "category": "Slides_Slippers",
+    "name": "Cloud Nine Slide",
+    "price": 790,
+    "originalPrice": 1190,
+    "badge": "Bestseller",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.03%20AM.jpeg",
+    "description": "Thick pillowy sole with 3.5cm cushioning height. Walking on air sensation designed for supreme recovery after sports or long walking days.",
+    "material": "Ultra-rebound Memory EVA Polymer",
+    "care": "Hand rinse with cold water.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 6,
+    "rating": 5,
+    "reviewCount": 89,
+    "features": [
+      "35mm pillow sole",
+      "Zero pressure point design",
+      "Shock absorbent heel cup"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-2",
+    "category": "Slides_Slippers",
+    "name": "Easy Street Slide",
+    "price": 790,
+    "originalPrice": 1090,
+    "badge": "",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.04%20AM%20(1).jpeg",
+    "description": "Minimalist streetwear slide with padded wide bandage strap and debossed OG monogram insignia. Matte finish with grip-friendly underside.",
+    "material": "Padded Vegan Leather Strap & Cushion Sole",
+    "care": "Spot clean with dry cloth.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 17,
+    "rating": 4.7,
+    "reviewCount": 32,
+    "features": [
+      "Padded neoprene lining",
+      "Debossed OG seal",
+      "Non-marking outsole"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-3",
+    "category": "Slides_Slippers",
+    "name": "The Sunday Slide",
+    "price": 690,
+    "originalPrice": 890,
+    "badge": "",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.07%20AM.jpeg",
+    "description": "The ultimate around-the-house and casual neighborhood slide. Lightweight, flexible, and completely hassle-free.",
+    "material": "Lightweight Flex Foam",
+    "care": "Rinse under tap and air dry.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 20,
+    "rating": 4.6,
+    "reviewCount": 27,
+    "features": [
+      "Ultra-flexible chassis",
+      "Quick-drying material",
+      "Textured footbed"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-4",
+    "category": "Slides_Slippers",
+    "name": "Weekend Runner Slide",
+    "price": 890,
+    "originalPrice": 1290,
+    "badge": "",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.09%20AM.jpeg",
+    "description": "Sculptural aerodynamic profile with pronounced arch support and rugged geometric lug traction for all outdoor terrain.",
+    "material": "Injection-molded Thermoplastic Elastomer",
+    "care": "Wipe with wet cloth.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 11,
+    "rating": 4.9,
+    "reviewCount": 41,
+    "features": [
+      "Geometric all-terrain tread",
+      "High energy return",
+      "Side ventilation slits"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-5",
+    "category": "Slides_Slippers",
+    "name": "Off Duty Slide",
+    "price": 790,
+    "originalPrice": 1090,
+    "badge": "New",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.10%20AM.jpeg",
+    "description": "Monochrome tonal slide with subtle contrast beveling. High arch support designed to relieve foot fatigue instantly.",
+    "material": "High-density EVA with Micro-texture Top",
+    "care": "Mild soap and water wash.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 8,
+    "rating": 4.8,
+    "reviewCount": 19,
+    "features": [
+      "Beveled toe roll",
+      "Sweat-wicking texture",
+      "Lightweight 180g"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-6",
+    "category": "Slides_Slippers",
+    "name": "Everyday Comfort Slide",
+    "price": 790,
+    "originalPrice": 990,
+    "badge": "",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.11%20AM.jpeg",
+    "description": "Pure minimalist comfort. Cushioned contoured strap that prevents chafing and an anatomical footbed supporting your natural stride.",
+    "material": "Soft-touch Synthetic Foam",
+    "care": "Air dry in shade.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 14,
+    "rating": 4.7,
+    "reviewCount": 23,
+    "features": [
+      "Anti-chafe strap lining",
+      "Deep heel cup",
+      "Non-squeak formula"
+    ]
+  },
+  {
+    "id": "Slides_Slippers-7",
+    "category": "Slides_Slippers",
+    "name": "Slow Morning Slide",
+    "price": 890,
+    "originalPrice": 1390,
+    "badge": "",
+    "image": "public/products/Slides_Slippers/WhatsApp%20Image%202026-10-15%20at%2010.59.14%20AM.jpeg",
+    "description": "Luxury molded comfort slide with oversized pillowed footbed and textured foot massage ridges. Built for slow weekends and easy mornings.",
+    "material": "Premium Rebound Foam",
+    "care": "Clean with damp cloth.",
+    "sizes": [
+      "7",
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "stock": 10,
+    "rating": 4.9,
+    "reviewCount": 36,
+    "features": [
+      "Micro-massage ridges",
+      "38mm elevated platform",
+      "Featherlight balance"
+    ]
+  }
+]
