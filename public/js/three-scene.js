@@ -25,6 +25,7 @@ const state = {
   current: 0,     // eased focus index
   drag: 0,        // drag rotation on the focused card, radians
   dragTarget: 0,
+  velocity: 0,    // rotation speed at release, radians/ms
   lastFocus: -1,
   layout: null,
   running: false,
@@ -77,16 +78,19 @@ function shadowTexture() {
 function mount(canvas, products, opts = {}) {
   const onFocus = opts.onFocus || (() => {});
   const reduced = !!opts.reduced;
+  const compact = window.matchMedia('(max-width: 720px)').matches;
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !compact, powerPreference: 'high-performance' });
   } catch (err) {
     return null;
   }
   if (!renderer || !renderer.getContext()) return null;
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // A capped drawing buffer keeps the full-screen rail crisp without asking
+  // mobile GPUs to shade millions of unnecessary pixels every frame.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compact ? 1.25 : 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
@@ -107,13 +111,14 @@ function mount(canvas, products, opts = {}) {
       product.image,
       (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
-        tex.anisotropy = Math.min(8, maxAniso || 1);
+        tex.anisotropy = Math.min(4, maxAniso || 1);
         coverUV(tex, CARD_ASPECT);
         mat.map = tex;
         mat.color.set(0xffffff);
         mat.needsUpdate = true;
         // give the cover-crop a moment to apply before showing
         mesh.userData.tex = tex;
+        renderOnce();
       },
       undefined,
       () => { /* keep the placeholder tint if a photo will not load */ }
@@ -135,6 +140,7 @@ function mount(canvas, products, opts = {}) {
   state.cards = cards;
   state.shadow = shadow;
   state.onFocus = onFocus;
+  state.onTap = opts.onTap || null;
   state.reduced = reduced;
   state.current = state.target = 0;
   state.lastFocus = -1;
@@ -148,6 +154,7 @@ function mount(canvas, products, opts = {}) {
   canvas.addEventListener('pointerup', onPointerUp);
   canvas.addEventListener('pointercancel', onPointerUp);
   canvas.addEventListener('pointerleave', onPointerUp);
+  canvas.addEventListener('wheel', onWheel, { passive: true });
 
   state.visible = true;
   startLoop();
@@ -230,6 +237,7 @@ function startLoop() {
   if (state.running) return;
   state.running = true;
   const tick = () => {
+    state.raf = null;
     if (!state.ready) return;
     const ease = state.reduced ? 1 : 0.14;
     state.current += (state.target - state.current) * ease;
@@ -246,7 +254,9 @@ function startLoop() {
       state.lastFocus = focus;
       if (state.onFocus) state.onFocus(focus, state.cards[focus] && state.cards[focus].userData.product);
     }
-    state.raf = requestAnimationFrame(tick);
+    const moving = Math.abs(state.target - state.current) >= 0.0004 || Math.abs(state.dragTarget - state.drag) >= 0.001;
+    if (moving && state.visible) state.raf = requestAnimationFrame(tick);
+    else state.running = false;
   };
   state.raf = requestAnimationFrame(tick);
 }
@@ -258,11 +268,18 @@ function stopLoop() {
 }
 
 /* ---------- input ---------- */
+const TURN_LIMIT = 0.7;
+
 function onPointerDown(e) {
   if (!state.ready) return;
   state.dragging = true;
+  state.dragged = 0;
+  state.velocity = 0;
+  state.downAt = e.timeStamp;
+  state.downX = e.clientX;
   state.dragStartX = e.clientX;
   state.dragBase = state.dragTarget;
+  state.lastMoveAt = e.timeStamp;
   state.mount.canvas.classList.add('is-dragging');
   state.mount.canvas.setPointerCapture && state.mount.canvas.setPointerCapture(e.pointerId);
 }
@@ -270,14 +287,38 @@ function onPointerDown(e) {
 function onPointerMove(e) {
   if (!state.dragging) return;
   const dx = e.clientX - state.dragStartX;
-  state.dragTarget = THREE.MathUtils.clamp(state.dragBase + dx * 0.006, -0.7, 0.7);
+  const next = THREE.MathUtils.clamp(state.dragBase + dx * 0.004, -TURN_LIMIT, TURN_LIMIT);
+  const dt = Math.max(1, e.timeStamp - state.lastMoveAt);
+  state.velocity = (next - state.dragTarget) / dt;
+  state.dragTarget = next;
+  state.dragged = Math.max(state.dragged, Math.abs(e.clientX - state.downX));
+  state.lastMoveAt = e.timeStamp;
+  startLoop();
 }
 
-function onPointerUp() {
+function onPointerUp(e) {
   if (!state.dragging) return;
   state.dragging = false;
-  state.dragTarget = 0;
   state.mount.canvas.classList.remove('is-dragging');
+  // A short, still press opens the piece; anything longer or moved is a drag.
+  if (e && e.type === 'pointerup' && state.dragged < 6 && e.timeStamp - state.downAt < 400) {
+    const card = state.cards[Math.round(state.current)];
+    if (card && state.onTap) state.onTap(card.userData.product);
+    return;
+  }
+  // Carry the release speed into the turn so it flings past before settling back.
+  state.drag = THREE.MathUtils.clamp(state.drag + (state.velocity || 0) * 70, -0.95, 0.95);
+  state.dragTarget = 0;
+  startLoop();
+}
+
+function onWheel(e) {
+  if (!state.ready || state.dragging) return;
+  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;   // vertical scroll still moves the rail
+  state.dragTarget = THREE.MathUtils.clamp(state.dragTarget + e.deltaX * 0.002, -TURN_LIMIT, TURN_LIMIT);
+  startLoop();
+  clearTimeout(state.wheelReset);
+  state.wheelReset = setTimeout(() => { if (!state.dragging) { state.dragTarget = 0; startLoop(); } }, 400);
 }
 
 /* ---------- public ---------- */
@@ -286,12 +327,34 @@ function setProgress(p) {
   const n = state.cards.length;
   if (!n) return;
   const clamped = Math.min(1, Math.max(0, p));
-  state.target = clamped * (n - 1);
+  const next = clamped * (n - 1);
+  if (Math.abs(next - state.target) > 0.0001) {
+    state.target = next;
+    startLoop();
+  }
 }
 
 function setVisible(v) {
   state.visible = !!v;
-  if (state.visible) renderOnce();
+  if (state.visible) { renderOnce(); startLoop(); }
+  else stopLoop();
+}
+
+function setTarget(idx) {
+  if (!state.ready) return;
+  const n = state.cards.length;
+  if (!n) return;
+  state.target = THREE.MathUtils.clamp(idx, 0, n - 1);
+  startLoop();
+}
+
+function rotateCard(delta) {
+  if (!state.ready) return;
+  state.dragTarget = THREE.MathUtils.clamp((state.dragTarget || 0) + delta, -0.85, 0.85);
+  startLoop();
+  setTimeout(() => {
+    if (!state.dragging) state.dragTarget = 0;
+  }, 1200);
 }
 
 function dispose() {
@@ -304,7 +367,9 @@ function dispose() {
     canvas.removeEventListener('pointerup', onPointerUp);
     canvas.removeEventListener('pointercancel', onPointerUp);
     canvas.removeEventListener('pointerleave', onPointerUp);
+    canvas.removeEventListener('wheel', onWheel);
   }
+  clearTimeout(state.wheelReset);
   state.cards.forEach((m) => {
     m.geometry.dispose();
     if (m.userData.tex) m.userData.tex.dispose();
@@ -316,5 +381,5 @@ function dispose() {
   state.cards = [];
 }
 
-window.OG3D = { mount, setProgress, setVisible, dispose, setTheme: fitTheme, state, isAvailable: () => true };
+window.OG3D = { mount, setProgress, setVisible, dispose, setTheme: fitTheme, setTarget, rotateCard, state, isAvailable: () => true };
 window.dispatchEvent(new CustomEvent('og3d:ready'));

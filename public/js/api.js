@@ -17,8 +17,20 @@ const API = {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('API error, using client fallback:', err);
-      return API.fallbackProducts(params);
+      console.warn('API error, attempting static data fallback:', err);
+      try {
+        const staticRes = await fetch(`${API_BASE}/data/products.json`);
+        if (staticRes.ok) {
+          const raw = await staticRes.json();
+          window.__LOCAL_PRODUCTS = raw;
+          return API.fallbackProducts(params);
+        }
+      } catch (e) {}
+      const fallback = API.fallbackProducts(params);
+      return {
+        ...fallback,
+        error: fallback.products.length ? null : 'The collection could not be loaded. Check your connection and try again.'
+      };
     }
   },
 
@@ -48,11 +60,19 @@ const API = {
       console.error('Promo validation error:', err);
       // Client-side fallback for offline
       const upper = (code || '').trim().toUpperCase();
+      const st = Number(subtotal) || 0;
       if (upper === 'OGFIRST10') {
-        const discountAmount = Math.round((subtotal * 10) / 100);
-        return { valid: true, code: 'OGFIRST10', discountAmount, description: '10% off your first order' };
+        const discountAmount = Math.round((st * 10) / 100);
+        return { valid: true, code: 'OGFIRST10', type: 'percentage', value: 10, discountAmount, description: '10% off your first order' };
       }
-      return { valid: false, error: 'Network error or invalid code' };
+      if (upper === 'OG200') {
+        if (st < 2000) return { valid: false, error: 'Requires a minimum order of ₹2,000' };
+        return { valid: true, code: 'OG200', type: 'fixed', value: 200, discountAmount: 200, description: '₹200 flat discount' };
+      }
+      if (upper === 'FREESHIP') {
+        return { valid: true, code: 'FREESHIP', type: 'free_shipping', value: 0, discountAmount: 0, description: 'Free shipping on all orders' };
+      }
+      return { valid: false, error: 'Invalid promo code' };
     }
   },
 

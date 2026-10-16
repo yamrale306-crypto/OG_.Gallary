@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>OG Gallery — Shirts, Denim &amp; Slides. Baramati.</title>
-<meta name="description" content="OG Gallery is a clothing store in Baramati, Maharashtra. Shirts, denim and slides, run in small numbers and fitted in person. Free shipping across India over ₹2,500." />
-<meta name="theme-color" content="#f3efe6" />
+<title>OG Gallery — Shirts, Denim &amp; Slides · Subhadra Mall, Baramati</title>
+<meta name="description" content="Shop shirts, denim and slides at OG Gallery, Counter 06, Subhadra Mall, Baramati. Browse the current selection or visit us to try it on." />
+<meta name="theme-color" content="#f7f4ed" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta property="og:title" content="OG Gallery — Shirts, Denim &amp; Slides" />
-<meta property="og:description" content="Small-run shirts, denim and slides. Fitted in person at Subhadra Mall, Baramati." />
+<meta property="og:description" content="Shirts, denim and slides at OG Gallery, Counter 06, Subhadra Mall, Baramati." />
 <meta property="og:type" content="website" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/public/brand/og-gallery-logo.png" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/styles.css" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css?v=3.7" />
 
 <script type="importmap">
 { "imports": { "three": "/vendor/three/three.module.js" } }
@@ -23,9 +25,13 @@
 
 <a class="skip-link" href="#shop">Skip to the collection</a>
 
-<!-- ══ notice ══ -->
-<div class="notice">
-  <p>Free shipping over ₹2,500<span class="notice-dot"></span><span class="notice-hide">Ships across India in 3–5 days</span><span class="notice-dot notice-hide"></span>Subhadra Mall 06, Baramati</p>
+<!-- ══ notice bar ══ -->
+<div class="notice" id="siteNotice">
+  <div class="notice-inner">
+    <span>OG Gallery</span>
+    <span class="notice-dot"></span>
+    <span>Counter 06 · Subhadra Mall, Baramati</span>
+  </div>
 </div>
 
 <!-- ══ header ══ -->
@@ -36,8 +42,7 @@
     </button>
 
     <a class="brand" href="#top" aria-label="OG Gallery home">
-      <span class="brand-mark">OG</span>
-      <span class="brand-word">Gallery</span>
+      <img class="brand-logo" src="/public/brand/og-gallery-logo.png" alt="OG Gallery" width="56" height="56" />
     </a>
 
     <nav class="nav" aria-label="Main">
@@ -45,22 +50,23 @@
       <a href="#shop" data-cat-link="Shirts">Shirts</a>
       <a href="#shop" data-cat-link="Jeans">Denim</a>
       <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
-      <a href="#rail">The rail</a>
+      <a href="#rail">Featured</a>
       <a href="#store">Visit us</a>
     </nav>
 
     <div class="header-tools">
-      <button class="icon-btn" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false">
+      <button class="icon-btn" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10 1.4 1.4m0-12.8-1.4 1.4m-10 10L5.6 18.4"/><circle cx="12" cy="12" r="4"/></svg>
       </button>
-      <button class="icon-btn" id="searchToggle" aria-label="Search products">
+      <button class="icon-btn" id="searchToggle" aria-label="Search products" title="Search (/ or ⌘K)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span class="keyhint">/</span>
       </button>
-      <button class="icon-btn" id="wishlistToggle" aria-label="Open saved items">
+      <button class="icon-btn" id="wishlistToggle" aria-label="Open saved items" title="Saved items">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z"/></svg>
         <span class="count" id="wishlistCount" hidden>0</span>
       </button>
-      <button class="icon-btn bag" id="cartToggle" aria-label="Open bag">
+      <button class="icon-btn bag" id="cartToggle" aria-label="Open bag" title="Your bag">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
         <span class="count" id="cartCount" hidden>0</span>
       </button>
@@ -79,9 +85,10 @@
   <a href="#shop" data-cat-link="Shirts">Shirts</a>
   <a href="#shop" data-cat-link="Jeans">Denim</a>
   <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
-  <a href="#rail">The rail</a>
-  <a href="#store">Visit us</a>
+  <a href="#rail">Featured pieces</a>
+  <a href="#store">Visit our counter</a>
   <a href="#" data-open="track">Track an order</a>
+  <a href="#" id="menuSizeGuide">Size guide</a>
 </nav>
 
 <div id="homeView">
@@ -90,48 +97,141 @@
   <!-- ══ hero ══ -->
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">Subhadra Mall 06 · Baramati</p>
-      <h1 class="hero-title">Made to be<br /><em>worn out.</em></h1>
-      <p class="hero-lede">Shirts, denim and slides for people who find the one thing that fits and wear it until it gives in. Small runs, cut clean, kept honest on price.</p>
+      <p class="eyebrow">Counter 06 · Subhadra Mall</p>
+      <h1 class="hero-title">OG Gallery,<br /><em>Baramati.</em></h1>
+      <p class="hero-lede">Shirts, denim and slides. Browse the current selection, or stop by the counter to see what’s here.</p>
       <div class="hero-actions">
-        <a class="btn btn-solid" href="#shop">Shop the collection</a>
-        <a class="btn btn-quiet" href="#rail">See them on the rail</a>
+        <a class="btn btn-solid" href="#shop">Browse collection</a>
+        <a class="hero-text-link" href="#store">Visit the shop <span aria-hidden="true">→</span></a>
       </div>
-      <dl class="hero-facts">
-        <div><dt>In stock</dt><dd id="factCount">24 pieces</dd></div>
-        <div><dt>Shipping</dt><dd>Free over ₹2,500</dd></div>
-        <div><dt>Returns</dt><dd>7 days, unused</dd></div>
-      </dl>
+      <div class="hero-note"><span class="hero-note-line"></span><span>Clothing and footwear · Baramati</span></div>
     </div>
     <figure class="hero-figure">
-      <img id="heroImage" src="/public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.58.57%20AM.jpeg" alt="A crisp shirt from the OG Gallery rail" width="900" height="1200" fetchpriority="high" />
-      <figcaption id="heroCaption">The Everyday Shirt · ₹1,290</figcaption>
+      <img id="heroImage" src="/public/products/Shirts/WhatsApp%20Image%202026-10-15%20at%2010.59.02%20AM.jpeg" alt="Shirts on display at OG Gallery in Baramati" width="900" height="1200" fetchpriority="high" />
+      <figcaption id="heroCaption">
+        <span>A look inside Counter 06</span>
+        <a href="#store">Find us →</a>
+      </figcaption>
     </figure>
   </section>
 
-  <!-- ══ the rail (3D) ══ -->
+  <!-- ══ trust ══ -->
+  <div class="trust">
+    <ul>
+      <li>UPI · GPay · PhonePe</li>
+      <li>Cards &amp; cash on delivery</li>
+      <li>Counter 06 · Subhadra Mall, Baramati</li>
+      <li>Open 10:00 – 21:30</li>
+    </ul>
+  </div>
+
+  <!-- Featured pieces -->
   <section class="rail" id="rail">
     <div class="rail-track" id="railTrack">
       <div class="rail-sticky">
         <canvas id="railCanvas" aria-hidden="true"></canvas>
+        <header class="rail-head">
+          <p class="eyebrow">At the shop</p>
+          <h2>Featured pieces</h2>
+          <p class="rail-sub">Scroll to browse. Drag a piece to turn it, tap to open.</p>
+        </header>
         <div class="rail-fallback" id="railFallback" hidden></div>
 
-        <header class="rail-head">
-          <p class="eyebrow">The rail</p>
-          <h2>Twelve pieces, up close.</h2>
-          <p class="rail-sub">Scroll to travel the rail. Press and drag a piece to turn it.</p>
-        </header>
+        <!-- Floating navigation controls -->
+        <button class="rail-nav-btn rail-nav-prev" id="railPrevBtn" type="button" aria-label="Previous piece" title="Previous piece">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="rail-nav-btn rail-nav-next" id="railNextBtn" type="button" aria-label="Next piece" title="Next piece">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
 
         <div class="rail-meta">
           <p class="rail-index"><span id="railCounter">01</span><span class="rail-sep">/</span><span id="railTotal">12</span></p>
           <p class="rail-cat" id="railCat">Shirts</p>
           <h3 class="rail-name" id="railName">—</h3>
           <p class="rail-price" id="railPrice">—</p>
-          <button class="btn btn-solid btn-sm" id="railView" type="button">View piece</button>
+          <div class="rail-meta-actions">
+            <button class="btn btn-solid btn-sm" id="railView" type="button">View full piece</button>
+            <button class="btn btn-outline btn-sm" id="railQuickView" type="button">Quick view</button>
+          </div>
         </div>
 
         <div class="rail-dots" id="railDots" role="tablist" aria-label="Rail pieces"></div>
-        <p class="rail-hint" id="railHint">Scroll</p>
+        <p class="rail-hint" id="railHint" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 16l-4-4 4-4M17 8l4 4-4 4M3 12h18"/></svg>
+          Drag horizontally to inspect piece
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ reels ══ -->
+  <section class="reels" id="reels">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow">On Instagram</p>
+        <h2>Fresh off the reel</h2>
+      </div>
+      <div class="reels-actions">
+        <button class="reels-nav" type="button" id="reelsPrev" aria-label="Earlier reels">‹</button>
+        <button class="reels-nav" type="button" id="reelsNext" aria-label="Later reels">›</button>
+        <a class="reels-link" href="https://instagram.com/og._gallery" target="_blank" rel="noopener">@og._gallery ↗</a>
+      </div>
+    </header>
+    <p class="reels-lede">Short clips from the counter — new stock, fittings and everyday fits. Tap a frame to play it.</p>
+    <div class="reels-grid" id="reelsGrid">
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DehMrzwIxWM" aria-label="Play Instagram reel 1 of 7: Lining pattern">
+          <img src="/public/reels/reel-1.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Lining pattern</span>
+        </button>
+        <a class="reel-shop" href="#shop" data-cat-link="Shirts">Shop shirts →</a>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DedXbU3oh1t" aria-label="Play Instagram reel 2 of 7: Navratri colours">
+          <img src="/public/reels/reel-2.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Navratri colours</span>
+        </button>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DeWmT23BfDu" aria-label="Play Instagram reel 3 of 7: Opening ceremony">
+          <img src="/public/reels/reel-3.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Opening ceremony</span>
+        </button>
+        <a class="reel-shop" href="#store">See the store →</a>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DeVx41Po8iY" aria-label="Play Instagram reel 4 of 7: Visit us">
+          <img src="/public/reels/reel-4.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Visit us</span>
+        </button>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DeTCmWTINgs" aria-label="Play Instagram reel 5 of 7: Not just clothes, it's OG">
+          <img src="/public/reels/reel-5.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Not just clothes — it’s OG</span>
+        </button>
+        <a class="reel-shop" href="#store">Find counter 06 →</a>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DeM9ujWIUYF" aria-label="Play Instagram reel 6 of 7: In store now">
+          <img src="/public/reels/reel-6.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">In store now</span>
+        </button>
+        <a class="reel-shop" href="#shop" data-cat-link="all">Shop all →</a>
+      </div>
+      <div class="reel-item">
+        <button class="reel" type="button" data-reel="DeH5wMWolV3" aria-label="Play Instagram reel 7 of 7: Coming soon">
+          <img src="/public/reels/reel-7.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
+          <span class="reel-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="reel-cap">Coming soon</span>
+        </button>
       </div>
     </div>
   </section>
@@ -140,91 +240,130 @@
   <section class="shop" id="shop">
     <header class="section-head">
       <div>
-        <p class="eyebrow">The collection</p>
-        <h2 id="shopTitle">Everything in store</h2>
+        <p class="eyebrow">Current selection</p>
+        <h2 id="shopTitle">Shop all</h2>
       </div>
-      <p class="section-count"><span id="resultCount">—</span> pieces</p>
+      <p class="section-count"><span id="resultCount">—</span> items</p>
     </header>
 
     <div class="toolbar">
       <div class="chips" id="filterChips" role="group" aria-label="Filter by category">
-        <button class="chip is-on" data-category="all" aria-pressed="true">All</button>
-        <button class="chip" data-category="Shirts" aria-pressed="false">Shirts</button>
-        <button class="chip" data-category="Jeans" aria-pressed="false">Denim</button>
-        <button class="chip" data-category="Slides_Slippers" aria-pressed="false">Slides</button>
+        <button class="chip is-on" data-category="all" aria-pressed="true">
+          All <span class="chip-count" id="countAll">24</span>
+        </button>
+        <button class="chip" data-category="Shirts" aria-pressed="false">
+          Shirts <span class="chip-count" id="countShirts">5</span>
+        </button>
+        <button class="chip" data-category="Jeans" aria-pressed="false">
+          Denim <span class="chip-count" id="countJeans">11</span>
+        </button>
+        <button class="chip" data-category="Slides_Slippers" aria-pressed="false">
+          Slides <span class="chip-count" id="countSlides">8</span>
+        </button>
       </div>
 
       <div class="toolbar-right">
-        <label class="field field-search">
+        <label class="field-search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="search" id="catalogSearch" placeholder="Search the rack" aria-label="Search the collection" />
+          <input type="search" id="catalogSearch" placeholder="Search the rack…" aria-label="Search the collection" />
+          <button type="button" class="clear-search-btn" id="catalogSearchClear" hidden aria-label="Clear search">✕</button>
         </label>
-        <label class="field field-select">
+        <label class="field-select">
           <span class="sr-only">Sort products</span>
           <select id="sortSelect">
             <option value="featured">Featured</option>
-            <option value="new">Newest</option>
+            <option value="rating">Top rated</option>
+            <option value="new">Newest first</option>
             <option value="low">Price: low to high</option>
             <option value="high">Price: high to low</option>
-            <option value="rating">Top rated</option>
           </select>
         </label>
       </div>
     </div>
 
+    <!-- Secondary filter pills -->
+    <div class="sub-filters" id="subFilters">
+      <button type="button" class="pill-filter" id="filterInStock">In stock only</button>
+      <button type="button" class="pill-filter" id="openSizeGuideBtn">Size guide</button>
+    </div>
+
     <div class="grid" id="productGrid" aria-live="polite"></div>
     <div class="empty" id="emptyState" hidden>
-      <h3>Nothing matches that.</h3>
-      <p>Try another word, or clear the filters.</p>
-      <button class="btn btn-solid btn-sm" id="emptyReset" type="button">Clear filters</button>
+        <h3>No items found.</h3>
+        <p>Try another search or clear a filter.</p>
+      <div class="empty-suggestions">
+        <button class="chip" data-category="Shirts">Show Shirts</button>
+        <button class="chip" data-category="Jeans">Show Denim</button>
+        <button class="chip" data-category="Slides_Slippers">Show Slides</button>
+      </div>
+      <button class="btn btn-solid btn-sm" id="emptyReset" type="button">Reset all filters</button>
     </div>
   </section>
 
   <!-- ══ store ══ -->
   <section class="store" id="store">
     <figure class="store-figure">
-      <img src="/public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.23%20AM.jpeg" alt="Denim on the rack at OG Gallery" loading="lazy" />
+      <img src="/public/products/Jeans/WhatsApp%20Image%202026-10-15%20at%2011.06.23%20AM.jpeg" alt="Real denim on the rack at OG Gallery Baramati" loading="lazy" />
     </figure>
     <div class="store-copy">
-      <p class="eyebrow">The store</p>
-      <h2>A shop you can walk into.</h2>
-      <p>OG Gallery is a real counter in Subhadra Mall, Baramati — not a warehouse with a logo. Come in and try things on before you buy. If a size is gone, we will check the back.</p>
-      <p>Prices are the same in the shop and online. No fake marked-down numbers.</p>
+      <p class="eyebrow">Come by</p>
+      <h2>Find us at Counter 06.</h2>
+      <p>We’re inside Subhadra Mall on Bhigwan Road. Stop in to browse the shirts, denim and slides, and try them on before you decide.</p>
+      <p>Open daily, 10:00 am–9:30 pm.</p>
       <ul class="store-list">
-        <li><span>Address</span>Subhadra Mall 06, Baramati, Maharashtra 413102</li>
+        <li><span>Address</span>Counter 06, Subhadra Mall, Plot P-60, Bhigwan Road, Baramati MIDC, Maharashtra 413133</li>
+        <li><span>Hours</span>Monday – Sunday, 10:00 AM – 9:30 PM IST</li>
         <li><span>Instagram</span><a href="https://instagram.com/og._gallery" target="_blank" rel="noopener">@og._gallery</a></li>
-        <li><span>Orders</span>Track any order with its OG number</li>
       </ul>
-      <button class="btn btn-outline" id="storeTrackBtn" type="button">Track an order</button>
+      <div class="store-actions">
+        <a class="btn btn-solid btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Subhadra+Mall+Plot+P-60+Bhigwan+Road+Baramati+MIDC+Maharashtra+413133" target="_blank" rel="noopener noreferrer">Get directions</a>
+        <button class="btn btn-outline btn-sm" id="storeTrackBtn" type="button">Track an order</button>
+      </div>
+      <div class="location-map" aria-label="Map to OG Gallery at Subhadra Mall">
+        <iframe title="Map showing Subhadra Mall, Baramati" src="https://maps.google.com/maps?q=Subhadra%20Mall%2C%20Plot%20P-60%2C%20Bhigwan%20Road%2C%20Baramati%20MIDC%2C%20Maharashtra%20413133&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
     </div>
   </section>
 
   <!-- ══ newsletter ══ -->
-  <section class="letter">
+  <section class="letter" id="guest-list">
     <div class="letter-inner">
-      <p class="eyebrow">The list</p>
-      <h2>Ten percent off the first one.</h2>
-      <p>Restocks, new drops and nothing else. Use the code at checkout.</p>
-      <form class="letter-form" id="newsletterForm" novalidate>
-        <input type="email" id="newsletterEmail" placeholder="you@email.com" aria-label="Email address" required />
-        <button class="btn btn-solid" type="submit">Get the code</button>
-      </form>
-      <p class="letter-note" id="newsletterNote" role="status"></p>
+      <div class="letter-copy">
+        <p class="eyebrow">From OG Gallery</p>
+        <h2>New stock,<br /><em>now and then.</em></h2>
+        <p>Get occasional updates from the store and 10% off your first online order.</p>
+      </div>
+      <div class="letter-signup">
+        <form class="letter-form" id="newsletterForm" novalidate>
+          <label class="sr-only" for="newsletterEmail">Email address</label>
+          <input type="email" id="newsletterEmail" placeholder="Your email address" aria-label="Email address" autocomplete="email" required />
+          <button class="btn btn-solid" type="submit">Join the list <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="letter-note" id="newsletterNote" role="status"></p>
+        <p class="letter-privacy">Just the good stuff. Unsubscribe whenever you like.</p>
+      </div>
     </div>
   </section>
 
 </main>
 </div>
 
-<!-- ══ product page ══ -->
+<!-- ══ product page (PDP) ══ -->
 <main class="pdp" id="pdpView" hidden></main>
 
 <!-- ══ footer ══ -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <span class="brand-mark">OG</span>
-      <p>Shirts, denim and slides. Baramati, Maharashtra.</p>
+      <img class="brand-logo footer-logo" src="/public/brand/og-gallery-logo.png" alt="OG Gallery premium collection" width="112" height="112" loading="lazy" />
+      <p>Shirts, denim and slides at Counter 06, Subhadra Mall, Baramati.</p>
+      <div class="footer-payments">
+        <span class="pay-badge">UPI</span>
+        <span class="pay-badge">GPay</span>
+        <span class="pay-badge">PhonePe</span>
+        <span class="pay-badge">Cards</span>
+        <span class="pay-badge">COD</span>
+      </div>
     </div>
     <div class="footer-cols">
       <div>
@@ -232,28 +371,30 @@
         <a href="#shop" data-cat-link="Shirts">Shirts</a>
         <a href="#shop" data-cat-link="Jeans">Denim</a>
         <a href="#shop" data-cat-link="Slides_Slippers">Slides</a>
+        <a href="#rail">Featured pieces</a>
       </div>
       <div>
-        <h3>Help</h3>
+        <h3>Assistance</h3>
         <a href="#" data-open="track">Track an order</a>
         <a href="#store">Shipping &amp; returns</a>
-        <a href="#" id="footerSizeLink">Size help</a>
+        <a href="#" id="footerSizeLink">Size guide &amp; charts</a>
       </div>
       <div>
-        <h3>Visit</h3>
+        <h3>Visit Counter</h3>
         <a href="https://instagram.com/og._gallery" target="_blank" rel="noopener">Instagram</a>
-        <span>Subhadra Mall 06</span>
-        <span>Baramati 413102</span>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Subhadra+Mall+Plot+P-60+Bhigwan+Road+Baramati+MIDC+Maharashtra+413133" target="_blank" rel="noopener noreferrer">Subhadra Mall 06</a>
+        <span>Plot P-60, Bhigwan Road</span>
+        <span>Baramati MIDC · 413133</span>
       </div>
     </div>
   </div>
   <div class="footer-base">
-    <p>© <span id="year">2026</span> OG Gallery</p>
-    <p>Built in Baramati</p>
+    <p>© <span id="year">2026</span> OG Gallery. All rights reserved.</p>
+    <a href="https://www.google.com/maps/search/?api=1&amp;query=Subhadra+Mall+Plot+P-60+Bhigwan+Road+Baramati+MIDC+Maharashtra+413133" target="_blank" rel="noopener noreferrer">Subhadra Mall 06 · Baramati, MH 413133 ↗</a>
   </div>
 </footer>
 
-<!-- ══ bag ══ -->
+<!-- ══ bag (cart drawer) ══ -->
 <div class="sheet-overlay" id="cartOverlay" hidden></div>
 <aside class="sheet sheet-right" id="cartDrawer" aria-label="Your bag" hidden>
   <div class="sheet-head">
@@ -262,14 +403,30 @@
   </div>
 
   <div class="ship-strip" id="shipStrip">
-    <p id="shipText">Free shipping over ₹2,500</p>
+    <p id="shipText"><span>Free shipping over ₹2,500</span></p>
     <div class="ship-bar"><span id="shipFill"></span></div>
   </div>
 
   <div class="sheet-body" id="cartItems"></div>
-  <p class="empty-note" id="cartEmpty">Your bag is empty. <a href="#shop" data-close-sheets>Have a look at the rail.</a></p>
+  <p class="empty-note" id="cartEmpty">Your bag is empty. <br /><a href="#shop" data-close-sheets>Explore the new drop on the rack.</a></p>
 
   <div class="sheet-foot">
+    <!-- Clickable Coupon Chips Shelf -->
+    <div class="quick-coupons" id="quickCoupons">
+      <p class="quick-coupons-title">Available codes</p>
+      <div class="coupons-list">
+        <button type="button" class="coupon-chip" data-apply-code="OGFIRST10">
+          <strong>OGFIRST10</strong> <span>· 10% off</span>
+        </button>
+        <button type="button" class="coupon-chip" data-apply-code="FREESHIP">
+          <strong>FREESHIP</strong> <span>· Free ship</span>
+        </button>
+        <button type="button" class="coupon-chip" data-apply-code="OG200">
+          <strong>OG200</strong> <span>· ₹200 off &gt; ₹2k</span>
+        </button>
+      </div>
+    </div>
+
     <form class="promo" id="promoForm" novalidate>
       <input type="text" id="promoInput" placeholder="Promo code" aria-label="Promo code" autocomplete="off" />
       <button class="btn btn-outline btn-sm" type="submit">Apply</button>
@@ -281,117 +438,175 @@
       <div><dt>Shipping</dt><dd id="lineShipping">—</dd></div>
       <div class="totals-grand"><dt>Total</dt><dd id="lineTotal">₹0</dd></div>
     </dl>
-    <button class="btn btn-solid btn-block" id="checkoutBtn" type="button">Checkout</button>
+    <button class="btn btn-solid btn-block" id="checkoutBtn" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure Checkout
+    </button>
   </div>
 </aside>
 
-<!-- ══ saved ══ -->
+<!-- ══ saved (wishlist drawer) ══ -->
 <div class="sheet-overlay" id="wishlistOverlay" hidden></div>
 <aside class="sheet sheet-right" id="wishlistDrawer" aria-label="Saved items" hidden>
   <div class="sheet-head">
-    <span class="sheet-title">Saved</span>
+    <span class="sheet-title">Saved pieces</span>
     <button class="icon-btn" id="wishlistClose" aria-label="Close saved items"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
   <div class="sheet-body" id="wishlistItems"></div>
-  <p class="empty-note" id="wishlistEmpty">Nothing saved yet. Tap the heart on a piece you like.</p>
+  <p class="empty-note" id="wishlistEmpty">Nothing saved yet. <br />Tap the heart on any piece you want to keep an eye on.</p>
   <div class="sheet-foot">
     <button class="btn btn-outline btn-block" id="wishlistAddAll" type="button">Add everything to bag</button>
   </div>
 </aside>
 
-<!-- ══ search ══ -->
+<!-- ══ search overlay ══ -->
 <div class="search" id="searchOverlay" hidden>
   <div class="search-card">
     <div class="search-head">
-      <label class="field field-search field-search-lg">
+      <label class="field-search-lg">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="search" id="searchInput" placeholder="Search shirts, denim, slides…" aria-label="Search" />
+        <input type="search" id="searchInput" placeholder="Search shirts, denim, slides…" aria-label="Search" autocomplete="off" />
       </label>
       <button class="icon-btn" id="searchClose" aria-label="Close search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     </div>
+    <div class="search-trends">
+      <span class="search-trend-title">Popular:</span>
+      <button type="button" class="search-trend-chip" data-search-term="Everyday Shirt">The Everyday Shirt</button>
+      <button type="button" class="search-trend-chip" data-search-term="13.5oz">13.5oz Denim</button>
+      <button type="button" class="search-trend-chip" data-search-term="Cloud Slides">Cloud Slides</button>
+      <button type="button" class="search-trend-chip" data-search-term="Poplin">Poplin</button>
+    </div>
     <div class="search-results" id="searchResults"></div>
-    <p class="search-hint" id="searchHint">Start typing. Six results at a time.</p>
+    <p class="search-hint" id="searchHint">Search by name, category or detail.</p>
   </div>
 </div>
 
-<!-- ══ checkout ══ -->
+<!-- ══ quick view modal ══ -->
+<div class="modal" id="quickViewModal" hidden>
+  <div class="modal-scrim" id="quickViewOverlay"></div>
+  <div class="modal-card modal-card-md" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+    <div class="modal-head">
+      <span class="eyebrow" style="margin:0">Quick Look</span>
+      <button class="icon-btn" id="quickViewClose" aria-label="Close quick view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="modal-body" id="quickViewBody"></div>
+  </div>
+</div>
+
+<!-- ══ size guide modal ══ -->
+<div class="modal" id="sizeGuideModal" hidden>
+  <div class="modal-scrim" id="sizeGuideOverlay"></div>
+  <div class="modal-card modal-card-md" role="dialog" aria-modal="true" aria-labelledby="sizeGuideTitle">
+    <div class="modal-head">
+      <h2 id="sizeGuideTitle">Size Guide &amp; Fit Measurements</h2>
+      <button class="icon-btn" id="sizeGuideClose" aria-label="Close size guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="sg-tabs" id="sgTabs">
+        <button type="button" class="sg-tab is-on" data-sg-cat="Shirts">Shirts</button>
+        <button type="button" class="sg-tab" data-sg-cat="Jeans">Denim</button>
+        <button type="button" class="sg-tab" data-sg-cat="Slides_Slippers">Slides</button>
+      </div>
+      <div class="sg-unit-toggle">
+        <span>Unit:</span>
+        <button type="button" class="chip is-on" id="unitInches" style="padding:0.25rem 0.6rem;font-size:0.7rem">Inches</button>
+        <button type="button" class="chip" id="unitCm" style="padding:0.25rem 0.6rem;font-size:0.7rem">CM</button>
+      </div>
+      <div class="sg-table-wrap" id="sgTableContainer"></div>
+      <div class="sg-tips">
+        <strong>How to find your size:</strong><br />
+        Take your favorite shirt or pair of jeans, lay it flat on a table, and measure across the chest or waistband. Compare with the chart above. All garments are pre-shrunk for an accurate fit straight out of the box.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ checkout modal ══ -->
 <div class="modal" id="checkoutModal" hidden>
   <div class="modal-scrim" id="checkoutOverlay"></div>
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
     <div class="modal-head">
-      <h2 id="checkoutTitle">Checkout</h2>
+      <h2 id="checkoutTitle">Express Checkout</h2>
       <button class="icon-btn" id="checkoutClose" aria-label="Close checkout"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     </div>
     <div class="modal-body">
-      <form class="checkout-form" id="checkoutForm" novalidate>
-        <fieldset>
-          <legend>Who is it for</legend>
-          <div class="rows-2">
-            <label class="field"><span>Full name</span><input id="checkoutName" required autocomplete="name" /></label>
-            <label class="field"><span>Email</span><input id="checkoutEmail" type="email" required autocomplete="email" /></label>
-          </div>
-          <label class="field"><span>Phone</span><input id="checkoutPhone" type="tel" required autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile" /></label>
-        </fieldset>
+      <div class="checkout-grid">
+        <form class="checkout-form" id="checkoutForm" novalidate>
+          <fieldset>
+            <legend>1. Contact Information</legend>
+            <div class="rows-2">
+              <label class="field"><span>Full name</span><input id="checkoutName" required autocomplete="name" placeholder="Devansh Patil" /></label>
+              <label class="field"><span>Email</span><input id="checkoutEmail" type="email" required autocomplete="email" placeholder="devansh@example.com" /></label>
+            </div>
+            <label class="field"><span>Phone number</span><input id="checkoutPhone" type="tel" required autocomplete="tel" inputmode="numeric" placeholder="10-digit mobile (e.g. 9876543210)" /></label>
+          </fieldset>
 
-        <fieldset>
-          <legend>Where it goes</legend>
-          <label class="field"><span>Address</span><input id="checkoutAddress" required autocomplete="street-address" placeholder="House, street, landmark" /></label>
-          <div class="rows-3">
-            <label class="field"><span>City</span><input id="checkoutCity" required value="Baramati" autocomplete="address-level2" /></label>
-            <label class="field"><span>State</span><input id="checkoutState" required value="Maharashtra" autocomplete="address-level1" /></label>
-            <label class="field"><span>PIN code</span><input id="checkoutPincode" required inputmode="numeric" pattern="[0-9]{6}" placeholder="413102" autocomplete="postal-code" /></label>
-          </div>
-        </fieldset>
+          <fieldset>
+            <legend>2. Shipping Address</legend>
+            <label class="field"><span>Delivery Address</span><input id="checkoutAddress" required autocomplete="street-address" placeholder="House / Flat No., Building, Street, Landmark" /></label>
+            <div class="rows-3">
+              <label class="field"><span>PIN code</span><input id="checkoutPincode" required inputmode="numeric" pattern="[0-9]{6}" placeholder="413102" autocomplete="postal-code" /></label>
+              <label class="field"><span>City</span><input id="checkoutCity" required value="Baramati" autocomplete="address-level2" /></label>
+              <label class="field"><span>State</span><input id="checkoutState" required value="Maharashtra" autocomplete="address-level1" /></label>
+            </div>
+          </fieldset>
 
-        <fieldset>
-          <legend>How you pay</legend>
-          <div class="pay" id="paymentOptions">
-            <label class="pay-opt is-on">
-              <input type="radio" name="payment" value="UPI" checked />
-              <span class="pay-name">UPI</span>
-              <span class="pay-note">Pay from any UPI app</span>
-            </label>
-            <label class="pay-opt">
-              <input type="radio" name="payment" value="COD" />
-              <span class="pay-name">Cash on delivery</span>
-              <span class="pay-note">Pay the courier</span>
-            </label>
-            <label class="pay-opt">
-              <input type="radio" name="payment" value="Card" />
-              <span class="pay-name">Card on delivery</span>
-              <span class="pay-note">Swipe at the door</span>
-            </label>
-          </div>
-          <div class="upi" id="upiBox">
-            <p>Complete the UPI transfer after placing the order. The amount and order number will be on the confirmation.</p>
-          </div>
-        </fieldset>
+          <fieldset>
+            <legend>3. Payment Method</legend>
+            <div class="pay" id="paymentOptions">
+              <label class="pay-opt is-on">
+                <input type="radio" name="payment" value="UPI" checked />
+                <span class="pay-name">UPI / QR Code</span>
+                <span class="pay-note">Instant pay via Google Pay, PhonePe, Paytm, CRED or any UPI app</span>
+              </label>
+              <label class="pay-opt">
+                <input type="radio" name="payment" value="COD" />
+                <span class="pay-name">Cash on Delivery</span>
+                <span class="pay-note">Pay the delivery agent in cash at your doorstep</span>
+              </label>
+              <label class="pay-opt">
+                <input type="radio" name="payment" value="Card" />
+                <span class="pay-name">Card on Delivery</span>
+                <span class="pay-note">Swipe Visa/Mastercard/RuPay on courier handheld terminal</span>
+              </label>
+            </div>
+            <div class="upi" id="upiBox">
+              <p>UPI QR code and payment instructions will be generated instantly with your order number.</p>
+              <div class="upi-apps">
+                <span class="upi-app-btn">GPay</span>
+                <span class="upi-app-btn">PhonePe</span>
+                <span class="upi-app-btn">Paytm</span>
+                <span class="upi-app-btn">BHIM</span>
+              </div>
+            </div>
+          </fieldset>
 
-        <p class="form-error" id="checkoutError" role="alert" hidden></p>
-      </form>
+          <p class="form-error" id="checkoutError" role="alert" hidden></p>
+        </form>
 
-      <aside class="checkout-side">
-        <h3>Order summary</h3>
-        <div class="checkout-items" id="checkoutItems"></div>
-        <dl class="totals">
-          <div><dt>Subtotal</dt><dd id="coSubtotal">₹0</dd></div>
-          <div id="coDiscountRow" hidden><dt>Discount</dt><dd id="coDiscount">−₹0</dd></div>
-          <div><dt>Shipping</dt><dd id="coShipping">—</dd></div>
-          <div class="totals-grand"><dt>Total</dt><dd id="coTotal">₹0</dd></div>
-        </dl>
-        <button class="btn btn-solid btn-block" id="placeOrderBtn" type="button">Place order</button>
-        <p class="fine">You will get an order number to track it with.</p>
-      </aside>
+        <aside class="checkout-side">
+          <h3>Order Summary</h3>
+          <div class="checkout-items" id="checkoutItems"></div>
+          <dl class="totals">
+            <div><dt>Subtotal</dt><dd id="coSubtotal">₹0</dd></div>
+            <div id="coDiscountRow" hidden><dt>Discount</dt><dd id="coDiscount">−₹0</dd></div>
+            <div><dt>Shipping</dt><dd id="coShipping">—</dd></div>
+            <div class="totals-grand"><dt>Total Amount</dt><dd id="coTotal">₹0</dd></div>
+          </dl>
+          <button class="btn btn-solid btn-block" id="placeOrderBtn" type="button">Confirm &amp; Place Order</button>
+          <p class="fine">🔒 256-bit encrypted checkout. Tracking link sent via SMS/Email.</p>
+        </aside>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ══ confirmation ══ -->
+<!-- ══ confirmation modal ══ -->
 <div class="modal" id="confirmModal" hidden>
   <div class="modal-scrim" id="confirmOverlay"></div>
   <div class="modal-card modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
     <div class="modal-head">
-      <h2 id="confirmTitle">Order placed</h2>
+      <h2 id="confirmTitle">Order Confirmed</h2>
       <button class="icon-btn" id="confirmClose" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     </div>
     <div class="modal-body confirm" id="confirmBody"></div>
@@ -402,7 +617,7 @@
   </div>
 </div>
 
-<!-- ══ tracking ══ -->
+<!-- ══ tracking modal ══ -->
 <div class="modal" id="trackModal" hidden>
   <div class="modal-scrim" id="trackOverlay"></div>
   <div class="modal-card modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="trackTitle">
@@ -413,7 +628,7 @@
     <div class="modal-body">
       <form class="track-form" id="trackForm" novalidate>
         <label class="field"><span>Order number</span><input id="trackInput" placeholder="OG-00001" autocomplete="off" /></label>
-        <button class="btn btn-solid" type="submit">Find it</button>
+        <button class="btn btn-solid" type="submit">Track</button>
       </form>
       <p class="form-error" id="trackError" role="alert" hidden></p>
       <div id="trackResult"></div>
@@ -427,20 +642,36 @@
   <img id="lightboxImg" alt="" />
 </div>
 
+<!-- ══ sticky mobile buy bar on PDP ══ -->
+<aside class="sticky-buy-bar" id="stickyBuyBar" aria-hidden="true">
+  <div class="sbb-inner">
+    <div class="sbb-info">
+      <img id="sbbImg" src="" alt="" />
+      <div class="sbb-text">
+        <p class="sbb-name" id="sbbName">—</p>
+        <p class="sbb-price" id="sbbPrice">—</p>
+      </div>
+    </div>
+    <div class="sbb-actions">
+      <button class="btn btn-solid btn-sm" id="sbbAddBtn" type="button">Add to bag</button>
+    </div>
+  </div>
+</aside>
+
 <!-- ══ mobile tab bar ══ -->
 <nav class="tabbar" aria-label="Quick access">
-  <a href="#top" class="tab" data-tab="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4v-9Z"/></svg><span>Home</span></a>
+  <a href="#top" class="tab is-on" data-tab="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-6 8 6v9H4v-9Z"/></svg><span>Home</span></a>
   <a href="#shop" class="tab" data-tab="shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l-1 13H5L4 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg><span>Shop</span></a>
   <button class="tab" id="tabSearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span></button>
   <button class="tab" id="tabWishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z"/></svg><span>Saved</span></button>
   <button class="tab" id="tabCart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Bag</span><span class="count" id="tabCartCount" hidden>0</span></button>
 </nav>
 
+<!-- ══ rich toast notification ══ -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="/public/vendor/lenis.min.js" defer></script>
-<script type="module" src="/public/js/three-scene.js"></script>
-<script src="/public/js/api.js" defer></script>
-<script src="/public/js/app.js" defer></script>
+<script src="/public/js/api.js?v=3.1" defer></script>
+<script src="/public/js/app.js?v=3.4" defer></script>
+<script type="module" src="/public/js/three-scene.js?v=3.3"></script>
 </body>
 </html>
